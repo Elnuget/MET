@@ -17,7 +17,7 @@ public class LoginServlet extends HttpServlet {
 
         try (PrintWriter out = response.getWriter()) {
             // Aquí comienza la lógica de validación
-            if ("Carlos".equals(username) && "1234".equals(password)) {
+            if ("Javier".equals(username) && "1234".equals(password)) {
                 // Si el usuario y la contraseña son correctos
                 out.println("<!DOCTYPE html>");
                 out.println("<html>");
