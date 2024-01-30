@@ -12,6 +12,10 @@
 <body>
 
     <div class="container mt-5">
+        <!-- Botón de cierre de sesión -->
+        <div class="text-right mb-3">
+            <a href="LogoutServlet" class="btn btn-danger">Cerrar Sesión</a>
+        </div>
         <h1 class="text-center mb-4">Sistema de Mantenimiento de Radios</h1>
         
         <!-- Verifica si el usuario está logueado -->
