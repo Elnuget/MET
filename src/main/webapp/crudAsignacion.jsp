@@ -1,4 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.sql.*,java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,13 +15,25 @@
 
         <!-- Formulario para añadir una nueva asignación -->
         <form action="AddAsignacionServlet" method="POST">
-            <input type="datetime-local" name="fechaAsignacion" required>
-            <input type="number" name="idTecnico" placeholder="ID del Técnico" required>
-            <input type="number" name="idRadio" placeholder="ID del Radio" required>
+            <div class="form-group">
+                <label for="fechaAsignacion">Fecha de Asignación:</label>
+                <input type="datetime-local" id="fechaAsignacion" name="fechaAsignacion" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="idTecnico">ID del Técnico:</label>
+                <input type="number" id="idTecnico" name="idTecnico" class="form-control" placeholder="ID del Técnico" required>
+            </div>
+            <div class="form-group">
+                <label for="idRadio">ID del Radio:</label>
+                <input type="number" id="idRadio" name="idRadio" class="form-control" placeholder="ID del Radio" required>
+            </div>
             <button type="submit" class="btn btn-success">Añadir Asignación</button>
         </form>
 
+        <hr>
+
         <!-- Lista de asignaciones existentes -->
+        <h2>Asignaciones Existentes</h2>
         <table class="table">
             <thead>
                 <tr>
@@ -31,20 +45,48 @@
                 </tr>
             </thead>
             <tbody>
-                <%-- Aquí deberías iterar sobre las asignaciones existentes --%>
-                <%-- Puedes obtener las asignaciones de la base de datos en tu servlet y pasarlas a JSP --%>
-                <%-- Por ejemplo: for (Asignacion asignacion : asignaciones) { --%>
+                <%
+                    Connection conn = null;
+                    Statement stmt = null;
+                    ResultSet rs = null;
+                    try {
+                        String driver = "com.mysql.cj.jdbc.Driver";
+                        String connectionUrl = "jdbc:mysql://localhost:3306/met"; // Asegúrate de que esta es tu URL de base de datos
+                        String dbUser = "root";
+                        String dbPassword = ""; // Poner tu contraseña si es necesario
+
+                        Class.forName(driver);
+                        conn = DriverManager.getConnection(connectionUrl, dbUser, dbPassword);
+                        stmt = conn.createStatement();
+                        String sql = "SELECT * FROM tbl_asignacion"; // Asegúrate de que esta es tu tabla de asignaciones
+                        rs = stmt.executeQuery(sql);
+
+                        while (rs.next()) {
+                            int id = rs.getInt("pk_id_asignacion");
+                            Timestamp fechaAsignacion = rs.getTimestamp("Fecha_asignacion");
+                            int idTecnico = rs.getInt("fk_id_tecnico");
+                            int idRadio = rs.getInt("fk_id_radio");
+                %>
                 <tr>
-                    <td><%-- asignacion.id --%></td>
-                    <td><%-- asignacion.fechaAsignacion --%></td>
-                    <td><%-- asignacion.idTecnico --%></td>
-                    <td><%-- asignacion.idRadio --%></td>
+                    <td><%= id %></td>
+                    <td><%= fechaAsignacion %></td>
+                    <td><%= idTecnico %></td>
+                    <td><%= idRadio %></td>
                     <td>
-                        <a href="EditAsignacionServlet?id=<%-- asignacion.id --%>" class="btn btn-primary">Editar</a>
-                        <a href="DeleteAsignacionServlet?id=<%-- asignacion.id --%>" class="btn btn-danger">Eliminar</a>
+                        <a href="EditAsignacionServlet?id=<%= id %>" class="btn btn-primary">Editar</a>
+                        <a href="DeleteAsignacionServlet?id=<%= id %>" class="btn btn-danger">Eliminar</a>
                     </td>
                 </tr>
-                <%-- } --%>
+                <%
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+                        if (stmt != null) try { stmt.close(); } catch (SQLException e) { e.printStackTrace(); }
+                        if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+                    }
+                %>
             </tbody>
         </table>
 
