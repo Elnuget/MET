@@ -3,141 +3,125 @@
 <%@page import="modelos.Custodio"%>
 <%@page import="dao.CustodioDAO"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Gestión de Custodios</title>
-        <!-- Bootstrap CSS para estilos -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MET|Custodio</title>
+        <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     </head>
     <body>
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="home.jsp">
-                <img src="https://img.icons8.com/ios-filled/50/000000/home.png" width="30" height="30" class="d-inline-block align-top" alt="">
-                Inicio
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="LogoutServlet">Cerrar Sesión</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <div class="container mt-4">
-            <!-- Verifica si el usuario está logueado -->
-            <%
-                if (session == null || session.getAttribute("usuarioLogueado") == null) {
-                    response.sendRedirect("index.html");
-                    return;
-                }
-            %>
+        <!-- HEADER -->
+        <%
+    String nombreUsuarioLogueado = (String) session.getAttribute("usuarioLogueado");
+String rolUsuario = (String) session.getAttribute("rolUsuario");
+if (nombreUsuarioLogueado == null || rolUsuario == null) {
+    response.sendRedirect("index.html");
+    return;
+}
 
-            <% if (request.getAttribute("mensaje") != null) { %>
-            <div class="alert alert-success" role="alert">
-                <%= request.getAttribute("mensaje") %>
-            </div>
-            <% } %>
-            <h1 class="mb-4">Gestión de Custodios</h1>
+        %>
+        <style>
+            /* Estilo para la sidebar */
+            .sidebar {
+                min-height: 100vh;
+            }
+        </style>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse custom-margin-top">
+                    <div class="list-group">
+                        <a href="home.jsp" class="list-group-item list-group-item-action "><i class="fas fa-home"></i> Inicio</a>
+                        <%-- Verificación del rol de usuario para mostrar el enlace Usuarios --%>
+                        <% if ("admin".equals(rolUsuario)) { %>
+                        <a href="crudUsuario.jsp" class="list-group-item list-group-item-action "><i class="fas fa-users"></i> Usuarios</a>
+                        <% } %>
+                        <a href="crudTecnico.jsp" class="list-group-item list-group-item-action"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
+                        <a href="crudCustodio.jsp" class="list-group-item list-group-item-action active" ><i class="fas fa-shield-alt"></i> Gestión de Custodios</a>
+                        <a href="LogoutServlet" class="list-group-item list-group-item-action text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                    </div>
+                </div>
+                <!-- HEADER -->
+                <!-- BODY -->
+                <!-- Page Content -->
+                <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
 
-            <!-- Formulario para añadir/editar un custodio en una tarjeta -->
-            <div class="card">
-                <div class="card-header">Añadir/Editar Custodio</div>
-                <div class="card-body">
-                    <form action="AddEditCustodioServlet" method="POST">
-                        <!-- Este input escondido es para el ID del custodio, que es necesario para editar -->
-                        <input type="hidden" name="id" id="id" value="">
-
-                        <div class="form-group">
-                            <label for="nombres">Nombres:</label>
-                            <input type="text" name="nombres" id="nombres" required class="form-control form-control-sm">
+                    <!-- El resto de tu contenido aquí -->
+                    <div class="container mt-5">
+                        <h2>Custodio</h2>
+                        <div class="my-4">
+                            <a href="add-usuario.jsp" class="btn btn-primary">Añadir Custodio</a>
                         </div>
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombres</th>
+                                    <th>Cédula</th>
+                                    <th>Celular</th>
+                                    <th>Dirección</th>
+                                    <th>Correo</th>
+                                    <th>Subzona</th>
+                                    <th>Distrito</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%
+                                    CustodioDAO custodioDao = new CustodioDAO();
+                                    List<Custodio> listaCustodios = custodioDao.selectAllCustodios();
+                                    for (Custodio custodio : listaCustodios) {
+                                %>
+                                <tr>
+                                    <td><%= custodio.getId() %></td>
+                                    <td><%= custodio.getNombres() %></td>
+                                    <td><%= custodio.getCedula() %></td>
+                                    <td><%= custodio.getCelular() %></td>
+                                    <td><%= custodio.getDireccion() %></td>
+                                    <td><%= custodio.getCorreo() %></td>
+                                    <td><%= custodio.getSubzona() %></td>
+                                    <td><%= custodio.getDistrito() %></td>
+                                    <td>
+                                        <a href="EditCustodioServlet?id=<%= custodio.getId() %>" class="btn btn-primary btn-sm">Editar</a>
+                                        <a href="DeleteCustodioServlet?id=<%= custodio.getId() %>" onclick="return confirm('¿Estás seguro de querer eliminar este custodio?');" class="btn btn-danger btn-sm">Eliminar</a>
+                                    </td>
+                                </tr>
+                                <%
+                                    }
+                                %>
+                            </tbody>
+                        </table>
 
-                        <div class="form-group">
-                            <label for="cedula">Cédula:</label>
-                            <input type="text" name="cedula" id="cedula" required class="form-control form-control-sm">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="celular">Celular:</label>
-                            <input type="text" name="celular" id="celular" required class="form-control form-control-sm">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="direccion">Dirección:</label>
-                            <input type="text" name="direccion" id="direccion" required class="form-control form-control-sm">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="correo">Correo:</label>
-                            <input type="email" name="correo" id="correo" required class="form-control form-control-sm">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="subzona">Subzona:</label>
-                            <input type="text" name="subzona" id="subzona" class="form-control form-control-sm">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="distrito">Distrito:</label>
-                            <input type="text" name="distrito" id="distrito" class="form-control form-control-sm">
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                    </form>
+                    </div>
                 </div>
             </div>
-
-
-            <hr>
-
-            <!-- Lista de custodios existentes -->
-            <h2>Listado de Custodios</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombres</th>
-                        <th>Cédula</th>
-                        <th>Celular</th>
-                        <th>Dirección</th>
-                        <th>Correo</th>
-                        <th>Subzona</th>
-                        <th>Distrito</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%
-                        CustodioDAO custodioDao = new CustodioDAO();
-                        List<Custodio> listaCustodios = custodioDao.selectAllCustodios();
-                        for (Custodio custodio : listaCustodios) {
-                    %>
-                    <tr>
-                        <td><%= custodio.getId() %></td>
-                        <td><%= custodio.getNombres() %></td>
-                        <td><%= custodio.getCedula() %></td>
-                        <td><%= custodio.getCelular() %></td>
-                        <td><%= custodio.getDireccion() %></td>
-                        <td><%= custodio.getCorreo() %></td>
-                        <td><%= custodio.getSubzona() %></td>
-                        <td><%= custodio.getDistrito() %></td>
-                        <td>
-                            <a href="EditCustodioServlet?id=<%= custodio.getId() %>" class="btn btn-primary btn-sm">Editar</a>
-                            <a href="DeleteCustodioServlet?id=<%= custodio.getId() %>" onclick="return confirm('¿Estás seguro de querer eliminar este custodio?');" class="btn btn-danger btn-sm">Eliminar</a>
-                        </td>
-                    </tr>
-                    <%
-                        }
-                    %>
-                </tbody>
-            </table>
         </div>
-        <!-- Bootstrap JS y dependencias -->
+        <!-- BODY -->
+        <!-- FOOTER -->
+        <style>
+            .imagen-fondo {
+                position: fixed; /* Posicionamiento fijo respecto a la ventana del navegador */
+                bottom: 0; /* Alineado abajo */
+                right:  0; /* Alineado a la izquierda */
+                z-index: -1; /* Coloca el div detrás de todo el contenido */
+            }
+
+            .imagen-fondo img {
+                opacity: 0.5; /* Ajusta la transparencia de la imagen (0 completamente transparente, 1 completamente opaco) */
+                width: 300px; /* O el tamaño que prefieras */
+                height: auto; /* Para mantener la proporción de la imagen */
+            }
+        </style>
+        <div class="imagen-fondo">
+            <img src="img/fondo.jpeg" alt="Imagen de fondo" style="width:100%; height:100%; object-fit: cover;">
+        </div>
+        <!-- FOOTER -->
+
+        <!-- Bootstrap JS and dependencies -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

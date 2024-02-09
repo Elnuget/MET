@@ -27,7 +27,23 @@
             return;
         }
     %>
-     
+     <style>
+            .imagen-fondo {
+                position: fixed; /* Posicionamiento fijo respecto a la ventana del navegador */
+                bottom: 0; /* Alineado abajo */
+                right:  0; /* Alineado a la izquierda */
+                z-index: -1; /* Coloca el div detrás de todo el contenido */
+            }
+
+            .imagen-fondo img {
+                opacity: 0.5; /* Ajusta la transparencia de la imagen (0 completamente transparente, 1 completamente opaco) */
+                width: 300px; /* O el tamaño que prefieras */
+                height: auto; /* Para mantener la proporción de la imagen */
+            }
+        </style>
+        <div class="imagen-fondo">
+            <img src="img/fondo.jpeg" alt="Imagen de fondo" style="width:100%; height:100%; object-fit: cover;">
+        </div>
     
     <div class="container mt-5">
         <div class="row">

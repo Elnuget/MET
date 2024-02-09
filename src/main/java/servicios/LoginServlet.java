@@ -30,10 +30,13 @@ public class LoginServlet extends HttpServlet {
             pst.setString(2, password);
             ResultSet rs = pst.executeQuery();
 
+            // Código para verificar el usuario en la base de datos...
             if (rs.next()) {
-                // Usuario y contraseña correctos
-                request.getSession().setAttribute("usuarioLogueado", username); // Establecer atributo de sesión
-                response.sendRedirect("home.jsp"); // Redirige a home.jsp
+                String rol = rs.getString("Rol"); // Asumiendo que la columna se llama 'Rol'
+                request.getSession().setAttribute("usuarioLogueado", username); // Guardamos el nombre de usuario como una String
+                request.getSession().setAttribute("rolUsuario", rol); // También guardamos el rol como una String
+                // Redireccionamos al usuario a home.jsp
+                response.sendRedirect("home.jsp");
             } else {
                 // Usuario o contraseña incorrectos
                 try (PrintWriter out = response.getWriter()) {
