@@ -107,4 +107,6 @@ public class Mantenimiento {
                 ", fk_id_tecnico=" + fk_id_tecnico +
                 '}';
     }
+
+    
 }

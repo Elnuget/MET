@@ -14,44 +14,30 @@ public class AddUsuarioServlet extends HttpServlet {
     private UsuarioDAO usuarioDao;
 
     public void init() {
-        usuarioDao = new UsuarioDAO("jdbc:mysql://localhost:3306/miBaseDatos", "miUsuario", "miContraseña");
-
- // Asegúrate de pasar los parámetros necesarios si los hay
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Simplemente reenvía la solicitud al formulario JSP donde el usuario puede ingresar los detalles del nuevo usuario
-        request.getRequestDispatcher("/usuario-add.jsp").forward(request, response);
+        usuarioDao = new UsuarioDAO("jdbc:mysql://localhost:3306/met", "root", "");
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String usuario = request.getParameter("usuario");
-        String contraseña = request.getParameter("contraseña"); // Considera usar hashing para la contraseña antes de almacenarla
-        String rol = request.getParameter("rol");
+        String usuario = request.getParameter("Usuario");
+        String contraseña = request.getParameter("Contraseña");
+        String rol = request.getParameter("Rol");
 
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setUsuario(usuario);
-        nuevoUsuario.setContraseña(contraseña); // Asegúrate de hash la contraseña antes de establecerla aquí
+        nuevoUsuario.setContraseña(contraseña);
         nuevoUsuario.setRol(rol);
 
         try {
-            boolean insertResult = usuarioDao.insertUsuario(nuevoUsuario);
-            if(insertResult) {
-                // Opcional: establece un mensaje de éxito para mostrar en la vista
-                request.setAttribute("mensaje", "Usuario agregado con éxito.");
-            } else {
-                // Opcional: establece un mensaje de error para mostrar en la vista
-                request.setAttribute("mensaje", "No se pudo agregar el usuario.");
-            }
+            usuarioDao.insertUsuario(nuevoUsuario);
         } catch (Exception e) {
-            // Manejo de la excepción y establecimiento de un mensaje de error
-            request.setAttribute("mensaje", "Error al agregar el usuario: " + e.getMessage());
+            // Aquí podrías registrar el error con un sistema de logging
+            // Pero no establecemos ningún atributo ni enviamos mensaje al cliente
         }
 
-        // Redirige o reenvía a la vista que mostrará el resultado de la operación
-        request.getRequestDispatcher("/usuario-add.jsp").forward(request, response);
+        // Redirección a la página deseada después de la inserción
+        // Esto evita que la recarga de la página vuelva a enviar los datos
+        response.sendRedirect("crudUsuario.jsp");
     }
 
     @Override
