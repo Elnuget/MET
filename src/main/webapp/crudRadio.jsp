@@ -1,17 +1,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="modelos.Usuario"%>
-<%@page import="dao.UsuarioDAO"%>
+<%@page import="java.util.List"%>
+<%@page import="modelos.Radio"%>
+<%@page import="dao.RadioDAO"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Inicio del Sistema de Mantenimiento de Equipos Terminales</title>
+        <title>MET|Radios</title>
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
     </head>
     <body>
         <!-- HEADER -->
@@ -35,14 +35,15 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                 <!-- Sidebar -->
                 <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse custom-margin-top">
                     <div class="list-group">
-                        <a href="home.jsp" class="list-group-item list-group-item-action active"><i class="fas fa-home"></i> Inicio</a>
+                        <a href="home.jsp" class="list-group-item list-group-item-action "><i class="fas fa-home"></i> Inicio</a>
                         <%-- Verificación del rol de usuario para mostrar el enlace Usuarios --%>
                         <% if ("admin".equals(rolUsuario)) { %>
                         <a href="crudUsuario.jsp" class="list-group-item list-group-item-action "><i class="fas fa-users"></i> Usuarios</a>
                         <% } %>
                         <a href="crudTecnico.jsp" class="list-group-item list-group-item-action"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
                         <a href="crudCustodio.jsp" class="list-group-item list-group-item-action" ><i class="fas fa-shield-alt"></i> Gestión de Custodios</a>
-                        <a href="crudRadio.jsp" class="list-group-item list-group-item-action"><i class="fas fa-broadcast-tower"></i> Gestión de Radios</a> 
+                        <a href="crudRadio.jsp" class="list-group-item list-group-item-action active"><i class="fas fa-broadcast-tower"></i> Gestión de Radios</a> 
+                        
                         <a href="crudMantenimiento.jsp" class="list-group-item list-group-item-action"><i class="fas fa-wrench"></i> Gestión de Mantenimientos</a>
                         <a href="LogoutServlet" class="list-group-item list-group-item-action text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
 
@@ -50,10 +51,52 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                 </div>
                 <!-- HEADER -->
                 <!-- BODY -->
-                <!-- Page Content -->
+                <!-- Contenido principal -->
                 <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                    <h1 class="mt-5">Bienvenido al Sistema de Equipos Terminales</h1>
-                    <!-- El resto de tu contenido aquí -->
+                    <div class="container mt-5">
+                        <h2>Radios</h2>
+                        <div class="my-4">
+                            <a href="add-radio.jsp" class="btn btn-primary">Añadir Radio</a>
+                        </div>
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tipo</th>
+                                    <th>Modelo</th>
+                                    <th>Marca</th>
+                                    <th>Serie</th>
+                                    <th>Custodio</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%
+                                    String jdbcURL = "jdbc:mysql://localhost:3306/met";
+                                    String jdbcUsername = "root";
+                                    String jdbcPassword = "";
+                                    RadioDAO radioDao = new RadioDAO(jdbcURL, jdbcUsername, jdbcPassword);
+                                    List<Radio> listRadios = radioDao.selectAllRadios();
+                                    for(Radio radio : listRadios) {
+                                %>
+                                <tr>
+                                    <td><%= radio.getPk_id_radio() %></td>
+                                    <td><%= radio.getTipo() %></td>
+                                    <td><%= radio.getModelo() %></td>
+                                    <td><%= radio.getMarca() %></td>
+                                    <td><%= radio.getSerie() %></td>
+                                    <td><%= radio.getFk_id_custodio() == null ? "Sin asignar" : radio.getFk_id_custodio().toString() %></td>
+                                    <td>
+                                        <a href="EditRadioServlet?id=<%= radio.getPk_id_radio() %>" class="btn btn-primary btn-sm">Editar</a>
+                                        <a href="DeleteRadioServlet?id=<%= radio.getPk_id_radio() %>" onclick="return confirm('¿Está seguro que desea eliminar este radio?');" class="btn btn-danger btn-sm">Eliminar</a>
+                                    </td>
+                                </tr>
+                                <%
+                                    }
+                                %>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
