@@ -17,12 +17,12 @@ public class Mantenimiento {
     }
 
     // Constructor con todos los atributos
-    public Mantenimiento(int pk_id_mantenimiento, String tipo, String descripcion, Date fecha_recepcion, Date fecha_entrega, String observacion, Integer fk_id_radio, Integer fk_id_tecnico) {
+    public Mantenimiento(int pk_id_mantenimiento, String tipo, String descripcion, Date fecha_recepcion, String observacion, Integer fk_id_radio, Integer fk_id_tecnico) {
         this.pk_id_mantenimiento = pk_id_mantenimiento;
         this.tipo = tipo;
         this.descripcion = descripcion;
         this.fecha_recepcion = fecha_recepcion;
-        this.fecha_entrega = fecha_entrega;
+       
         this.observacion = observacion;
         this.fk_id_radio = fk_id_radio;
         this.fk_id_tecnico = fk_id_tecnico;
@@ -61,13 +61,7 @@ public class Mantenimiento {
         this.fecha_recepcion = fecha_recepcion;
     }
 
-    public Date getFecha_entrega() {
-        return fecha_entrega;
-    }
-
-    public void setFecha_entrega(Date fecha_entrega) {
-        this.fecha_entrega = fecha_entrega;
-    }
+   
 
     public String getObservacion() {
         return observacion;
@@ -101,7 +95,7 @@ public class Mantenimiento {
                 ", tipo='" + tipo + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", fecha_recepcion=" + fecha_recepcion +
-                ", fecha_entrega=" + fecha_entrega +
+                
                 ", observacion='" + observacion + '\'' +
                 ", fk_id_radio=" + fk_id_radio +
                 ", fk_id_tecnico=" + fk_id_tecnico +

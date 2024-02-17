@@ -75,13 +75,12 @@ public class UsuarioDAO {
         return usuarios;
     }
 
-    public boolean deleteUsuario(Usuario usuario) throws SQLException {
-        String sql = "DELETE FROM tbl_usuario where pk_id_usuario = ?";
-
+    public boolean deleteUsuario(int id) throws SQLException {
+        String sql = "DELETE FROM tbl_usuario WHERE pk_id_usuario = ?";
         connect();
 
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setInt(1, usuario.getPk_id_usuario());
+        statement.setInt(1, id);
 
         boolean rowDeleted = statement.executeUpdate() > 0;
         statement.close();

@@ -84,7 +84,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                     <td>••••••••</td> <!-- Por seguridad, no se deben mostrar las contraseñas -->
                                     <td><%= usuario.getRol() %></td>
                                     <td>
-                                        <a href="EditUsuarioServlet?id=<%= usuario.getPk_id_usuario() %>" class="btn btn-primary btn-sm">Editar</a>
+                                       
                                         <a href="DeleteUsuarioServlet?id=<%= usuario.getPk_id_usuario() %>" onclick="return confirm('¿Está seguro que desea eliminar este usuario?');" class="btn btn-danger btn-sm">Eliminar</a>
                                     </td>
                                 </tr>

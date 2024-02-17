@@ -45,7 +45,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                         <a href="crudCustodio.jsp" class="list-group-item list-group-item-action" ><i class="fas fa-shield-alt"></i> Gestión de Custodios</a>
                         <a href="crudRadio.jsp" class="list-group-item list-group-item-action"><i class="fas fa-broadcast-tower"></i> Gestión de Radios</a> 
                         <a href="crudMantenimiento.jsp" class="list-group-item list-group-item-action active"><i class="fas fa-wrench"></i> Gestión de Mantenimientos</a>
-                  
+
                         <a href="LogoutServlet" class="list-group-item list-group-item-action text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
 
                     </div>
@@ -64,7 +64,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                 <th>Tipo</th>
                                 <th>Descripción</th>
                                 <th>Fecha Recepción</th>
-                                <th>Fecha Entrega</th>
+
                                 <th>Observación</th>
                                 <th>Radio ID</th>
                                 <th>Técnico ID</th>
@@ -85,12 +85,16 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                 <td><%= mantenimiento.getTipo() %></td>
                                 <td><%= mantenimiento.getDescripcion() %></td>
                                 <td><%= mantenimiento.getFecha_recepcion() %></td>
-                                <td><%= mantenimiento.getFecha_entrega() %></td>
+
                                 <td><%= mantenimiento.getObservacion() %></td>
                                 <td><%= mantenimiento.getFk_id_radio() != null ? mantenimiento.getFk_id_radio() : "N/A" %></td>
                                 <td><%= mantenimiento.getFk_id_tecnico() != null ? mantenimiento.getFk_id_tecnico() : "N/A" %></td>
                                 <td>
-                                    <a href="EditMantenimientoServlet?id=<%= mantenimiento.getPk_id_mantenimiento() %>" class="btn btn-primary btn-sm">Editar</a>
+                                    <a href="ImprimirMantenimientoServlet?id=<%= mantenimiento.getPk_id_mantenimiento() %>"  class="btn btn-primary btn-sm">Imprimir</a>
+                                    <!-- Suponiendo que estás dentro de un bucle que recorre los mantenimientos -->
+                                    <a href="VerificarEntregaServlet?fkIdMantenimiento=<%= mantenimiento.getPk_id_mantenimiento() %>" class="btn btn-success btn-sm">Entregar</a>
+
+
                                     <a href="DeleteMantenimientoServlet?id=<%= mantenimiento.getPk_id_mantenimiento() %>" onclick="return confirm('¿Está seguro que desea eliminar este mantenimiento?');" class="btn btn-danger btn-sm">Eliminar</a>
                                 </td>
                             </tr>

@@ -3,6 +3,7 @@ package dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import modelos.Mantenimiento;
 
 public class MantenimientoDAO {
@@ -37,24 +38,23 @@ public class MantenimientoDAO {
     }
 
     public boolean insertMantenimiento(Mantenimiento mantenimiento) throws SQLException {
-        String sql = "INSERT INTO tbl_mantenimiento (Tipo, Descripción, Fecha_recepción, Fecha_entrega, Observación, fk_id_radio, fk_id_tecnico) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tbl_mantenimiento (Tipo, Descripción, Fecha_recepción, Observación, fk_id_radio, fk_id_tecnico) VALUES (?, ?, ?, ?, ?, ?)";
         connect();
 
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
         statement.setString(1, mantenimiento.getTipo());
         statement.setString(2, mantenimiento.getDescripcion());
         statement.setDate(3, new java.sql.Date(mantenimiento.getFecha_recepcion().getTime()));
-        statement.setDate(4, new java.sql.Date(mantenimiento.getFecha_entrega().getTime()));
-        statement.setString(5, mantenimiento.getObservacion());
+        statement.setString(4, mantenimiento.getObservacion()); // Corrección aquí, usando el índice 4
         if (mantenimiento.getFk_id_radio() != null) {
-            statement.setInt(6, mantenimiento.getFk_id_radio());
+            statement.setInt(5, mantenimiento.getFk_id_radio()); // Ahora usando el índice 5
         } else {
-            statement.setNull(6, Types.INTEGER);
+            statement.setNull(5, Types.INTEGER);
         }
         if (mantenimiento.getFk_id_tecnico() != null) {
-            statement.setInt(7, mantenimiento.getFk_id_tecnico());
+            statement.setInt(6, mantenimiento.getFk_id_tecnico()); // Y finalmente el índice 6
         } else {
-            statement.setNull(7, Types.INTEGER);
+            statement.setNull(6, Types.INTEGER);
         }
 
         boolean rowInserted = statement.executeUpdate() > 0;
@@ -76,14 +76,18 @@ public class MantenimientoDAO {
             String tipo = resultSet.getString("Tipo");
             String descripcion = resultSet.getString("Descripción");
             Date fecha_recepcion = resultSet.getDate("Fecha_recepción");
-            Date fecha_entrega = resultSet.getDate("Fecha_entrega");
+
             String observacion = resultSet.getString("Observación");
             Integer fk_id_radio = resultSet.getInt("fk_id_radio");
-            if (resultSet.wasNull()) fk_id_radio = null;
+            if (resultSet.wasNull()) {
+                fk_id_radio = null;
+            }
             Integer fk_id_tecnico = resultSet.getInt("fk_id_tecnico");
-            if (resultSet.wasNull()) fk_id_tecnico = null;
+            if (resultSet.wasNull()) {
+                fk_id_tecnico = null;
+            }
 
-            mantenimientos.add(new Mantenimiento(id, tipo, descripcion, fecha_recepcion, fecha_entrega, observacion, fk_id_radio, fk_id_tecnico));
+            mantenimientos.add(new Mantenimiento(id, tipo, descripcion, fecha_recepcion, observacion, fk_id_radio, fk_id_tecnico));
         }
 
         resultSet.close();
@@ -91,6 +95,48 @@ public class MantenimientoDAO {
 
         disconnect();
         return mantenimientos;
+    }
+
+    public boolean deleteMantenimiento(int pk_id_mantenimiento) throws SQLException {
+        String sql = "DELETE FROM tbl_mantenimiento WHERE pk_id_mantenimiento = ?";
+        connect();
+
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setInt(1, pk_id_mantenimiento);
+
+        boolean rowDeleted = statement.executeUpdate() > 0;
+        statement.close();
+        disconnect();
+        return rowDeleted;
+    }
+
+    public Optional<Mantenimiento> getMantenimiento(int pk_id_mantenimiento) throws SQLException {
+        Mantenimiento mantenimiento = null;
+        String sql = "SELECT * FROM tbl_mantenimiento WHERE pk_id_mantenimiento = ?";
+
+        connect();
+
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setInt(1, pk_id_mantenimiento);
+
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            String tipo = resultSet.getString("Tipo");
+            String descripcion = resultSet.getString("Descripción");
+            Date fecha_recepcion = resultSet.getDate("Fecha_recepción");
+            String observacion = resultSet.getString("Observación");
+            Integer fk_id_radio = (Integer) resultSet.getObject("fk_id_radio");
+            Integer fk_id_tecnico = (Integer) resultSet.getObject("fk_id_tecnico");
+
+            mantenimiento = new Mantenimiento(pk_id_mantenimiento, tipo, descripcion, fecha_recepcion, observacion, fk_id_radio, fk_id_tecnico);
+        }
+
+        resultSet.close();
+        statement.close();
+        disconnect();
+
+        return Optional.ofNullable(mantenimiento);
     }
 
     // Implementa los métodos deleteMantenimiento, updateMantenimiento, y getMantenimiento siguiendo el patrón del UsuarioDAO.

@@ -77,7 +77,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                     <td><%= tecnico.getCedula() %></td>
                                     <td><%= tecnico.getCelular() %></td>
                                     <td>
-                                        <a href="EditTecnicoServlet?id=<%= tecnico.getId() %>" class="btn btn-primary btn-sm">Editar</a>
+                                        
                                         <a href="DeleteTecnicoServlet?id=<%= tecnico.getId() %>" onclick="return confirm('¿Está seguro que desea eliminar este técnico?');" class="btn btn-danger btn-sm">Eliminar</a>
                                     </td>
                                 </tr>

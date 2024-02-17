@@ -105,13 +105,12 @@ public class RadioDAO {
         return rowUpdated;
     }
 
-    public boolean deleteRadio(Radio radio) throws SQLException {
+    public boolean deleteRadio(int pk_id_radio) throws SQLException {
         String sql = "DELETE FROM tbl_radio WHERE pk_id_radio = ?";
-
         connect();
 
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setInt(1, radio.getPk_id_radio());
+        statement.setInt(1, pk_id_radio);
 
         boolean rowDeleted = statement.executeUpdate() > 0;
         statement.close();

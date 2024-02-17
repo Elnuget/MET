@@ -23,7 +23,6 @@ public class AddMantenimientoServlet extends HttpServlet {
         String tipo = request.getParameter("Tipo");
         String descripcion = request.getParameter("Descripción");
         String fechaRecepcion = request.getParameter("Fecha_recepción");
-        String fechaEntrega = request.getParameter("Fecha_entrega");
         String observacion = request.getParameter("Observación");
         int fk_id_radio = Integer.parseInt(request.getParameter("fk_id_radio"));
         int fk_id_tecnico = Integer.parseInt(request.getParameter("fk_id_tecnico"));
@@ -35,7 +34,7 @@ public class AddMantenimientoServlet extends HttpServlet {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             nuevoMantenimiento.setFecha_recepcion(dateFormat.parse(fechaRecepcion));
-            nuevoMantenimiento.setFecha_entrega(dateFormat.parse(fechaEntrega));
+           
         } catch (Exception e) {
             // Manejo de error en caso de falla al parsear las fechas
         }

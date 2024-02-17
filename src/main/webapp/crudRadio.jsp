@@ -2,6 +2,8 @@
 <%@page import="java.util.List"%>
 <%@page import="modelos.Radio"%>
 <%@page import="dao.RadioDAO"%>
+<%@page import="modelos.Custodio"%>
+<%@page import="dao.CustodioDAO"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -43,7 +45,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                         <a href="crudTecnico.jsp" class="list-group-item list-group-item-action"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
                         <a href="crudCustodio.jsp" class="list-group-item list-group-item-action" ><i class="fas fa-shield-alt"></i> Gestión de Custodios</a>
                         <a href="crudRadio.jsp" class="list-group-item list-group-item-action active"><i class="fas fa-broadcast-tower"></i> Gestión de Radios</a> 
-                        
+
                         <a href="crudMantenimiento.jsp" class="list-group-item list-group-item-action"><i class="fas fa-wrench"></i> Gestión de Mantenimientos</a>
                         <a href="LogoutServlet" class="list-group-item list-group-item-action text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
 
@@ -76,8 +78,16 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                     String jdbcUsername = "root";
                                     String jdbcPassword = "";
                                     RadioDAO radioDao = new RadioDAO(jdbcURL, jdbcUsername, jdbcPassword);
+                                    CustodioDAO custodioDao = new CustodioDAO();
                                     List<Radio> listRadios = radioDao.selectAllRadios();
                                     for(Radio radio : listRadios) {
+                                     String nombreCustodio = "Sin asignar"; // Valor por defecto si no hay custodio
+    if (radio.getFk_id_custodio() != null) {
+        Custodio custodio = custodioDao.findCustodioById(radio.getFk_id_custodio());
+        if (custodio != null) {
+            nombreCustodio = custodio.getNombre(); // O el método adecuado para obtener el nombre del custodio
+        }
+    }
                                 %>
                                 <tr>
                                     <td><%= radio.getPk_id_radio() %></td>
@@ -85,9 +95,9 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                     <td><%= radio.getModelo() %></td>
                                     <td><%= radio.getMarca() %></td>
                                     <td><%= radio.getSerie() %></td>
-                                    <td><%= radio.getFk_id_custodio() == null ? "Sin asignar" : radio.getFk_id_custodio().toString() %></td>
+                                    <td><%= nombreCustodio %></td>
                                     <td>
-                                        <a href="EditRadioServlet?id=<%= radio.getPk_id_radio() %>" class="btn btn-primary btn-sm">Editar</a>
+
                                         <a href="DeleteRadioServlet?id=<%= radio.getPk_id_radio() %>" onclick="return confirm('¿Está seguro que desea eliminar este radio?');" class="btn btn-danger btn-sm">Eliminar</a>
                                     </td>
                                 </tr>

@@ -38,6 +38,10 @@ public class Custodio {
     public String getNombres() {
         return nombres;
     }
+     public String getNombre() {
+        // Retorna la propiedad que contiene el nombre del custodio.
+        return this.nombres; // Asegúrate de que 'nombre' sea el nombre de la propiedad que contiene el nombre del custodio.
+    }
 
     public void setNombres(String nombres) {
         this.nombres = nombres;
