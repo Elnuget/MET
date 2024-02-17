@@ -53,7 +53,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                 </div>
                 <!-- HEADER -->
                 <!-- BODY -->
-                <div class="container mt-5">
+                <div class="col-md-9 col-lg-10">
                     <h2>Mantenimientos</h2>
                     <div class="my-4">
                         <a href="add-mantenimiento.jsp" class="btn btn-primary">Añadir Mantenimiento</a>
