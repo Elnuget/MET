@@ -11,6 +11,7 @@ import modelos.Usuario;
 
 @WebServlet("/AddUsuarioServlet")
 public class AddUsuarioServlet extends HttpServlet {
+
     private UsuarioDAO usuarioDao;
 
     public void init() {
@@ -19,25 +20,27 @@ public class AddUsuarioServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String usuario = request.getParameter("Usuario");
-        String contraseña = request.getParameter("Contraseña");
-        String rol = request.getParameter("Rol");
+        String Usuario = request.getParameter("Usuario");
+        String Contraseña = request.getParameter("Contraseña");
+        String rol = request.getParameter("rol");
+
+        // Validación y asignación de valor por defecto para 'rol'
+        if (rol == null || rol.isEmpty()) {
+            rol = "valorPorDefecto"; // Reemplaza 'valorPorDefecto' con un valor válido para tu aplicación
+        }
 
         Usuario nuevoUsuario = new Usuario();
-        nuevoUsuario.setUsuario(usuario);
-        nuevoUsuario.setContraseña(contraseña);
+        nuevoUsuario.setUsuario(Usuario);
+        nuevoUsuario.setContraseña(Contraseña);
         nuevoUsuario.setRol(rol);
 
         try {
             usuarioDao.insertUsuario(nuevoUsuario);
+            response.sendRedirect("crudUsuario.jsp");
         } catch (Exception e) {
-            // Aquí podrías registrar el error con un sistema de logging
-            // Pero no establecemos ningún atributo ni enviamos mensaje al cliente
+            response.getWriter().println("Error al agregar el usuario: " + e.getMessage());
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-
-        // Redirección a la página deseada después de la inserción
-        // Esto evita que la recarga de la página vuelva a enviar los datos
-        response.sendRedirect("crudUsuario.jsp");
     }
 
     @Override
