@@ -164,5 +164,32 @@ public class CustodioDAO {
         // Devuelve el objeto Custodio encontrado o null si no se encontró ninguno.
         return custodio;
     }
+    public Custodio buscarPorCedula(String cedula) {
+        Custodio custodio = null;
+        String sql = "SELECT * FROM tbl_custodio WHERE Cedula = ?";
+
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, cedula);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("pk_id_custodio");
+                String nombres = rs.getString("Nombres");
+                String celular = rs.getString("Celular");
+                String direccion = rs.getString("Direccion");
+                String correo = rs.getString("Correo");
+                String subzona = rs.getString("Subzona");
+                String distrito = rs.getString("Distrito");
+                String rango = rs.getString("Rango");
+                
+                custodio = new Custodio(id, nombres, cedula, celular, direccion, correo, subzona, distrito, rango);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Opcionalmente, manejar de otra manera o lanzar una excepción personalizada
+        }
+
+        return custodio;
+    }
 
 }

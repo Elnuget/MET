@@ -1,6 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="modelos.Usuario"%>
 <%@page import="dao.UsuarioDAO"%>
+<%@page import="modelos.Custodio"%>
+<%@page import="dao.CustodioDAO"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -47,9 +49,9 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                         <%-- Verificación del rol de usuario para mostrar el enlace Usuarios --%>
                         <% if ("admin".equals(rolUsuario)) { %>
                         <a href="crudUsuario.jsp" class="list-group-item list-group-item-action "><i class="fas fa-users"></i> Usuarios</a>
-                       
+
                         <a href="crudTecnico.jsp" class="list-group-item list-group-item-action"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
-                         <% } %>
+                        <% } %>
                         <a href="crudCustodio.jsp" class="list-group-item list-group-item-action" ><i class="fas fa-shield-alt"></i> Gestión de Custodios</a>
                         <a href="crudRadio.jsp" class="list-group-item list-group-item-action active"><i class="fas fa-broadcast-tower"></i> Gestión de Radios</a> 
                         <a href="crudMantenimiento.jsp" class="list-group-item list-group-item-action"><i class="fas fa-wrench"></i> Gestión de Mantenimientos</a>
@@ -62,31 +64,80 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                 <!-- Page Content -->
                 <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     <div class="container mt-5">
-        <h2>Añadir Radio</h2>
-        <form action="AddRadioServlet" method="POST">
-            <div class="form-group">
-                <label for="tipo">Tipo</label>
-                <input type="text" class="form-control" id="tipo" name="tipo" required>
-            </div>
-            <div class="form-group">
-                <label for="modelo">Modelo</label>
-                <input type="text" class="form-control" id="modelo" name="modelo" required>
-            </div>
-            <div class="form-group">
-                <label for="marca">Marca</label>
-                <input type="text" class="form-control" id="marca" name="marca" required>
-            </div>
-            <div class="form-group">
-                <label for="serie">Serie</label>
-                <input type="text" class="form-control" id="serie" name="serie" required>
-            </div>
-            <div class="form-group">
-                <label for="fk_id_custodio">ID Custodio (Referencia)</label>
-                <input type="number" class="form-control" id="fk_id_custodio" name="fk_id_custodio" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Añadir Radio</button>
-        </form>
-    </div>
+                        <h2>Añadir Radio</h2>
+                        <!-- ... -->
+                        <div class="form-group">
+                            <label for="cedula_custodio">Cédula del Custodio</label>
+                            <input type="text" class="form-control" id="cedula_custodio" name="cedula_custodio" placeholder="Ingrese la cédula del custodio">
+                            <button type="button" class="btn btn-info" onclick="verificarCustodio()">Verificar Custodio</button>
+                        </div>
+                        <div id="resultado"></div>
+
+
+                        <script>
+                            function verificarCustodio() {
+                                var cedula = document.getElementById('cedula_custodio').value;
+                                if (cedula) {
+                                    fetch('BuscarCustodioServlet?cedula=' + cedula)
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.existe) {
+                                                    document.getElementById('resultado').innerHTML = 'Nombre del Custodio: ' + data.nombre;
+                                                    document.getElementById('submitBtn').disabled = false; // Habilita el botón de envío
+                                                    document.getElementById('fk_id_custodio').value = data.id;
+                                                } else {
+                                                    document.getElementById('resultado').innerHTML = 'Custodio no encontrado.';
+                                                    document.getElementById('submitBtn').disabled = true; // Mantiene el botón de envío deshabilitado
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error('Error:', error);
+                                                document.getElementById('resultado').innerHTML = 'Error al buscar el custodio.';
+                                                document.getElementById('submitBtn').disabled = true; // Mantiene el botón de envío deshabilitado
+                                            });
+                                } else {
+                                    document.getElementById('resultado').innerHTML = 'Por favor ingrese la cédula del custodio.';
+                                    document.getElementById('submitBtn').disabled = true; // Mantiene el botón de envío deshabilitado
+                                }
+                            }
+                        </script>
+                        <form action="AddRadioServlet" method="POST">
+                            <div class="form-group">
+                                <label for="tipo">Tipo</label>
+                                <select class="form-control" id="tipo" name="tipo" required>
+                                    <option value="Base">Base</option>
+                                    <option value="Móvil">Móvil</option>
+                                    <option value="Portátil">Portátil</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="modelo">Modelo</label>
+                                <input type="text" class="form-control" id="modelo" name="modelo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="marca">Marca</label>
+                                <select class="form-control" id="marca" name="marca" required>
+                                    <option value="Motorola">Motorola</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="serie">Serie</label>
+                                <input type="text" class="form-control" id="serie" name="serie" required>
+                            </div>
+                            <!-- Campo oculto para el ID del custodio (fk_id_custodio) -->
+                            <input type="hidden" id="fk_id_custodio" name="fk_id_custodio" value="">
+
+
+                            <!-- ... -->
+
+
+
+                            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Añadir Radio</button>
+
+                        </form>
+                    </div>
                     <!-- El resto de tu contenido aquí -->
                 </div>
             </div>
