@@ -35,11 +35,19 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                 <!-- Sidebar -->
                 <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse custom-margin-top">
                     <div class="list-group">
+                        <!-- Icono y nombre del usuario -->
+                        <a href="#" class="list-group-item list-group-item-action disabled" aria-disabled="true">
+                            <div class="text-center">
+                                <i class="fas fa-user-circle fa-2x"></i> <!-- Icono del usuario -->
+                                <div><strong><%= nombreUsuarioLogueado %></strong></div> <!-- Nombre del usuario -->
+                                <div><%= rolUsuario %></div> <!-- Rol del usuario -->
+                            </div>
+                        </a>
                         <a href="home.jsp" class="list-group-item list-group-item-action active"><i class="fas fa-home"></i> Inicio</a>
                         <%-- Verificación del rol de usuario para mostrar el enlace Usuarios --%>
                         <% if ("admin".equals(rolUsuario)) { %>
                         <a href="crudUsuario.jsp" class="list-group-item list-group-item-action "><i class="fas fa-users"></i> Usuarios</a>
-                        
+
                         <a href="crudTecnico.jsp" class="list-group-item list-group-item-action"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
                         <% } %>
                         <a href="crudCustodio.jsp" class="list-group-item list-group-item-action" ><i class="fas fa-shield-alt"></i> Gestión de Custodios</a>
