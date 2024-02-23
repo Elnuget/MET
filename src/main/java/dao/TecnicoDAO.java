@@ -118,4 +118,21 @@ public class TecnicoDAO {
             }
         }
     }
+    public Tecnico findtecnicoById(int pk_id_tecnico) throws SQLException {
+        Tecnico tecnico = null;
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SELECT_TECNICO_BY_ID)) {
+            preparedStatement.setInt(1, pk_id_tecnico);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                String nombres = rs.getString("nombres");
+                String cedula = rs.getString("cedula");
+                String celular = rs.getString("celular");
+                tecnico = new Tecnico(pk_id_tecnico, nombres, cedula, celular);
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return tecnico;
+    }
 }

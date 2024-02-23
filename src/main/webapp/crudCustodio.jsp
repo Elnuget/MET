@@ -78,7 +78,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                     <th>Correo</th>
                                     <th>Subzona</th>
                                     <th>Distrito</th>
-                                    <th>Rango</th>
+                                    <th>Grado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>

@@ -66,12 +66,8 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                     <div class="container mt-5">
                         <h2>Añadir Custodio</h2>
                         <form action="AddCustodioServlet" method="POST">
-                            <div class="form-group">
-                                <label for="Nombres">Nombres</label>
-                                <input type="text" class="form-control" id="Nombres" name="Nombres" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="rango">Rango</label>
+                             <div class="form-group">
+                                <label for="rango">Grado</label>
                                 <select class="form-control" id="rango" name="Rango">
                                     <option value="P.N.">P.N.</option>
                                     <option value="Cbos.">Cbos.</option>
@@ -92,6 +88,11 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                     <option value="GraS.">GraS.</option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="Nombres">Nombres</label>
+                                <input type="text" class="form-control" id="Nombres" name="Nombres" required>
+                            </div>
+                           
                             <div class="form-group">
                                 <label for="Cedula">Cédula</label>
                                 <input type="text" class="form-control" id="Cedula" name="Cedula" required>

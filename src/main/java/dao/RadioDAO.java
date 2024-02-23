@@ -146,4 +146,33 @@ public class RadioDAO {
 
         return radio;
     }
+
+    public Radio findradioById(int pk_id_radio) throws SQLException {
+        // Define la consulta SQL para buscar un custodio por su ID.
+        String sql = "SELECT * FROM tbl_radio WHERE pk_id_radio = ?";
+        Radio radio = null;
+        connect();
+
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setInt(1, pk_id_radio);
+
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            String tipo = resultSet.getString("tipo");
+            String modelo = resultSet.getString("modelo");
+            String marca = resultSet.getString("marca");
+            String serie = resultSet.getString("serie");
+            Integer fk_id_custodio = (Integer) resultSet.getObject("fk_id_custodio");
+
+            radio = new Radio(pk_id_radio, tipo, modelo, marca, serie, fk_id_custodio);
+        }
+
+        resultSet.close();
+        statement.close();
+
+        disconnect();
+
+        return radio;
+    }
 }

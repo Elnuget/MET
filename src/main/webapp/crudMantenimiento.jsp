@@ -2,6 +2,10 @@
 <%@page import="java.util.List"%>
 <%@page import="modelos.Mantenimiento"%>
 <%@page import="dao.MantenimientoDAO"%>
+<%@page import="modelos.Radio"%>
+<%@page import="dao.RadioDAO"%>
+<%@page import="modelos.Tecnico"%>
+<%@page import="dao.TecnicoDAO"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -71,12 +75,12 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                             <tr>
                                 <th>ID</th>
                                 <th>Tipo</th>
-                                <th>Descripción</th>
+                                <th>Estado Actual del Equipo</th>
                                 <th>Fecha Recepción</th>
 
                                 <th>Observación</th>
-                                <th>Radio ID</th>
-                                <th>Técnico ID</th>
+                                <th>Serie</th>
+                                <th>Técnico</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -86,8 +90,20 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                 String jdbcUsername = "root";
                                 String jdbcPassword = "";
                                 MantenimientoDAO mantenimientoDao = new MantenimientoDAO(jdbcURL, jdbcUsername, jdbcPassword);
+                                RadioDAO radioDao = new RadioDAO(jdbcURL, jdbcUsername, jdbcPassword);
+                                TecnicoDAO tecnicoDao = new TecnicoDAO();
                                 List<Mantenimiento> listMantenimientos = mantenimientoDao.selectAllMantenimientos();
                                 for(Mantenimiento mantenimiento : listMantenimientos) {
+                                String nombreRadio = "Sin asignar"; //
+                                String nombreTecnico = "Sin asignar"; //
+                                 if (mantenimiento.getFk_id_radio() != null && mantenimiento.getFk_id_tecnico() != null) {
+        Radio radio = radioDao.findradioById(mantenimiento.getFk_id_radio());
+        Tecnico tecnico = tecnicoDao.findtecnicoById(mantenimiento.getFk_id_tecnico());
+        if (radio != null && tecnico!= null) {
+            nombreRadio = radio.getSerie(); // O el método adecuado para obtener el nombre del custodio
+            nombreTecnico = tecnico.getNombres();
+        }
+    }
                             %>
                             <tr>
                                 <td><%= mantenimiento.getPk_id_mantenimiento() %></td>
@@ -96,8 +112,8 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                 <td><%= mantenimiento.getFecha_recepcion() %></td>
 
                                 <td><%= mantenimiento.getObservacion() %></td>
-                                <td><%= mantenimiento.getFk_id_radio() != null ? mantenimiento.getFk_id_radio() : "N/A" %></td>
-                                <td><%= mantenimiento.getFk_id_tecnico() != null ? mantenimiento.getFk_id_tecnico() : "N/A" %></td>
+                                <td><%= nombreRadio %></td>
+                                <td><%= nombreTecnico %></td>
                                 <td>
                                     <a href="ImprimirMantenimientoServlet?id=<%= mantenimiento.getPk_id_mantenimiento() %>"  class="btn btn-primary btn-sm">Imprimir</a>
                                     <!-- Suponiendo que estás dentro de un bucle que recorre los mantenimientos -->

@@ -47,11 +47,11 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                         <%-- Verificación del rol de usuario para mostrar el enlace Usuarios --%>
                         <% if ("admin".equals(rolUsuario)) { %>
                         <a href="crudUsuario.jsp" class="list-group-item list-group-item-action "><i class="fas fa-users"></i> Usuarios</a>
-                        
-                       
-                       <a href="crudTecnico.jsp" class="list-group-item list-group-item-action"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
-                       <% } %> 
-                       <a href="crudCustodio.jsp" class="list-group-item list-group-item-action" ><i class="fas fa-shield-alt"></i> Gestión de Custodios</a>
+
+
+                        <a href="crudTecnico.jsp" class="list-group-item list-group-item-action"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
+                        <% } %> 
+                        <a href="crudCustodio.jsp" class="list-group-item list-group-item-action" ><i class="fas fa-shield-alt"></i> Gestión de Custodios</a>
                         <a href="crudRadio.jsp" class="list-group-item list-group-item-action"><i class="fas fa-broadcast-tower"></i> Gestión de Radios</a> 
                         <a href="crudMantenimiento.jsp" class="list-group-item list-group-item-action active"><i class="fas fa-wrench"></i> Gestión de Mantenimientos</a>
                         <a href="LogoutServlet" class="list-group-item list-group-item-action text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
@@ -63,36 +63,40 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                 <!-- Page Content -->
                 <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     <div class="container mt-5">
-        <h2>Añadir Registro de Mantenimiento</h2>
-        <form action="AddMantenimientoServlet" method="POST">
-            <div class="form-group">
-                <label for="Tipo">Tipo</label>
-                <input type="text" class="form-control" id="Tipo" name="Tipo" required>
-            </div>
-            <div class="form-group">
-                <label for="Descripción">Descripción</label>
-                <textarea class="form-control" id="Descripción" name="Descripción" rows="3" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="Fecha_recepción">Fecha de Recepción</label>
-                <input type="date" class="form-control" id="Fecha_recepción" name="Fecha_recepción" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="Observación">Observación</label>
-                <textarea class="form-control" id="Observación" name="Observación" rows="3" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="fk_id_radio">ID de Radio (Referencia)</label>
-                <input type="number" class="form-control" id="fk_id_radio" name="fk_id_radio">
-            </div>
-            <div class="form-group">
-                <label for="fk_id_tecnico">ID de Técnico (Referencia)</label>
-                <input type="number" class="form-control" id="fk_id_tecnico" name="fk_id_tecnico">
-            </div>
-            <button type="submit" class="btn btn-primary">Añadir Mantenimiento</button>
-        </form>
-    </div>
+                        <h2>Añadir Registro de Mantenimiento</h2>
+                        <form action="AddMantenimientoServlet" method="POST">
+                            <div class="form-group">
+                                <label for="Tipo">Tipo</label>
+                                <select class="form-control" id="Tipo" name="Tipo" required>
+                                    <option value="Preventivo">Preventivo</option>
+                                    <option value="Correctivo">Correctivo</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Descripción">Estado Actual del Equipo</label>
+                                <textarea class="form-control" id="Descripción" name="Descripción" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="Fecha_recepción">Fecha de Recepción</label>
+                                <input type="date" class="form-control" id="Fecha_recepción" name="Fecha_recepción" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Observación">Observación</label>
+                                <textarea class="form-control" id="Observación" name="Observación" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="fk_id_radio">ID de Radio (Referencia)</label>
+                                <input type="number" class="form-control" id="fk_id_radio" name="fk_id_radio">
+                            </div>
+                            <div class="form-group">
+                                <label for="fk_id_tecnico">ID de Técnico (Referencia)</label>
+                                <input type="number" class="form-control" id="fk_id_tecnico" name="fk_id_tecnico">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Añadir Mantenimiento</button>
+                        </form>
+                    </div>
                     <!-- El resto de tu contenido aquí -->
                 </div>
             </div>
