@@ -12,14 +12,14 @@ public class CustodioDAO {
     private String jdbcPassword = "";
 
     private static final String INSERT_CUSTODIO_SQL = "INSERT INTO tbl_custodio"
-            + " (Nombres, Cedula, Celular, Direccion, Correo, Subzona, Distrito) VALUES "
-            + " (?, ?, ?, ?, ?, ?, ?);";
+            + " (Nombres, Cedula, Celular, Direccion, Correo, Subzona, Distrito, Rango) VALUES "
+            + " (?, ?, ?, ?, ?, ?, ?, ?);";
 
     private static final String SELECT_CUSTODIO_BY_ID = "SELECT * FROM tbl_custodio WHERE pk_id_custodio =?";
     private static final String SELECT_ALL_CUSTODIOS = "SELECT * FROM tbl_custodio";
     private static final String DELETE_CUSTODIO_SQL = "DELETE FROM tbl_custodio WHERE pk_id_custodio = ?;";
     private static final String UPDATE_CUSTODIO_SQL = "UPDATE tbl_custodio SET Nombres = ?, Cedula = ?, Celular = ?, "
-            + "Direccion = ?, Correo = ?, Subzona = ?, Distrito = ? WHERE pk_id_custodio = ?;";
+            + "Direccion = ?, Correo = ?, Subzona = ?, Distrito = ?, Rango = ? WHERE pk_id_custodio = ?;";
 
     public CustodioDAO() {
     }
@@ -46,6 +46,7 @@ public class CustodioDAO {
             preparedStatement.setString(5, custodio.getCorreo());
             preparedStatement.setString(6, custodio.getSubzona());
             preparedStatement.setString(7, custodio.getDistrito());
+            preparedStatement.setString(8, custodio.getRango());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,7 +67,8 @@ public class CustodioDAO {
                 String correo = rs.getString("Correo");
                 String subzona = rs.getString("Subzona");
                 String distrito = rs.getString("Distrito");
-                custodio = new Custodio(id, nombres, cedula, celular, direccion, correo, subzona, distrito);
+                String rango = rs.getString("Rango");
+                custodio = new Custodio(id, nombres, cedula, celular, direccion, correo, subzona, distrito, rango);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,7 +90,8 @@ public class CustodioDAO {
                 String correo = rs.getString("Correo");
                 String subzona = rs.getString("Subzona");
                 String distrito = rs.getString("Distrito");
-                custodios.add(new Custodio(id, nombres, cedula, celular, direccion, correo, subzona, distrito));
+                String rango = rs.getString("Rango");
+                custodios.add(new Custodio(id, nombres, cedula, celular, direccion, correo, subzona, distrito, rango));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -117,7 +120,8 @@ public class CustodioDAO {
             statement.setString(5, custodio.getCorreo());
             statement.setString(6, custodio.getSubzona());
             statement.setString(7, custodio.getDistrito());
-            statement.setInt(8, custodio.getId());
+            statement.setString(8, custodio.getRango());
+            statement.setInt(9, custodio.getId());
 
             rowUpdated = statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -146,9 +150,10 @@ public class CustodioDAO {
                 String correo = rs.getString("Correo");
                 String subzona = rs.getString("Subzona");
                 String distrito = rs.getString("Distrito");
+                String rango = rs.getString("Rango");
 
                 // Crea un objeto Custodio con los datos recuperados de la base de datos.
-                custodio = new Custodio(pk_id_custodio, nombres, cedula, celular, direccion, correo, subzona, distrito);
+                custodio = new Custodio(pk_id_custodio, nombres, cedula, celular, direccion, correo, subzona, distrito, rango);
             }
         } catch (SQLException e) {
             // Maneja cualquier error que pueda ocurrir durante el proceso.

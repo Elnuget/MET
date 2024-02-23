@@ -78,6 +78,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                     <th>Correo</th>
                                     <th>Subzona</th>
                                     <th>Distrito</th>
+                                    <th>Rango</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -96,6 +97,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                     <td><%= custodio.getCorreo() %></td>
                                     <td><%= custodio.getSubzona() %></td>
                                     <td><%= custodio.getDistrito() %></td>
+                                    <td><%= custodio.getRango() %></td>
                                     <td>
                                         
                                         <a href="DeleteCustodioServlet?id=<%= custodio.getId() %>" onclick="return confirm('¿Estás seguro de querer eliminar este custodio?');" class="btn btn-danger btn-sm">Eliminar</a>

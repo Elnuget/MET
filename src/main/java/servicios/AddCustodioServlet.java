@@ -26,6 +26,7 @@ public class AddCustodioServlet extends HttpServlet {
         String correo = request.getParameter("Correo");
         String subzona = request.getParameter("Subzona");
         String distrito = request.getParameter("Distrito");
+        String rango = request.getParameter("Rango");
 
         Custodio nuevoCustodio = new Custodio();
         nuevoCustodio.setNombres(nombres);
@@ -35,6 +36,7 @@ public class AddCustodioServlet extends HttpServlet {
         nuevoCustodio.setCorreo(correo);
         nuevoCustodio.setSubzona(subzona);
         nuevoCustodio.setDistrito(distrito);
+        nuevoCustodio.setRango(rango);
 
         try {
             custodioDao.addCustodio(nuevoCustodio);

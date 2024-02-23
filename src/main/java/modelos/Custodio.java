@@ -1,6 +1,7 @@
 package modelos;
 
 public class Custodio {
+
     private int id;
     private String nombres;
     private String cedula;
@@ -9,13 +10,14 @@ public class Custodio {
     private String correo;
     private String subzona;
     private String distrito;
+    private String rango;
 
     // Constructor vacío
     public Custodio() {
     }
 
     // Constructor con parámetros
-    public Custodio(int id, String nombres, String cedula, String celular, String direccion, String correo, String subzona, String distrito) {
+    public Custodio(int id, String nombres, String cedula, String celular, String direccion, String correo, String subzona, String distrito, String rango) {
         this.id = id;
         this.nombres = nombres;
         this.cedula = cedula;
@@ -24,6 +26,7 @@ public class Custodio {
         this.correo = correo;
         this.subzona = subzona;
         this.distrito = distrito;
+        this.rango = rango;
     }
 
     // Getters y setters
@@ -38,7 +41,8 @@ public class Custodio {
     public String getNombres() {
         return nombres;
     }
-     public String getNombre() {
+
+    public String getNombre() {
         // Retorna la propiedad que contiene el nombre del custodio.
         return this.nombres; // Asegúrate de que 'nombre' sea el nombre de la propiedad que contiene el nombre del custodio.
     }
@@ -93,5 +97,12 @@ public class Custodio {
 
     public void setDistrito(String distrito) {
         this.distrito = distrito;
+    }
+    public String getRango() {
+        return rango;
+    }
+
+    public void setRango(String rango) {
+        this.rango = rango;
     }
 }

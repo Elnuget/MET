@@ -11,6 +11,8 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <!-- Incluye Select2 CSS -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
     </head>
     <body>
@@ -47,7 +49,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                         <%-- Verificación del rol de usuario para mostrar el enlace Usuarios --%>
                         <% if ("admin".equals(rolUsuario)) { %>
                         <a href="crudUsuario.jsp" class="list-group-item list-group-item-action "><i class="fas fa-users"></i> Usuarios</a>
-                        
+
                         <a href="crudTecnico.jsp" class="list-group-item list-group-item-action"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
                         <% } %>
                         <a href="crudCustodio.jsp" class="list-group-item list-group-item-action active" ><i class="fas fa-shield-alt"></i> Gestión de Custodios</a>
@@ -67,6 +69,28 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                             <div class="form-group">
                                 <label for="Nombres">Nombres</label>
                                 <input type="text" class="form-control" id="Nombres" name="Nombres" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="rango">Rango</label>
+                                <select class="form-control" id="rango" name="Rango">
+                                    <option value="P.N.">P.N.</option>
+                                    <option value="Cbos.">Cbos.</option>
+                                    <option value="Cbop.">Cbop.</option>
+                                    <option value="Sgos.">Sgos.</option>
+                                    <option value="Sgop.">Sgop.</option>
+                                    <option value="Sbos.">Sbos.</option>
+                                    <option value="Sbop.">Sbop.</option>
+                                    <option value="Sbom.">Sbom.</option>
+                                    <option value="Sbte.">Sbte.</option>
+                                    <option value="Tnte.">Tnte.</option>
+                                    <option value="Cptn.">Cptn.</option>
+                                    <option value="Mayr.">Mayr.</option>
+                                    <option value="Tcrnl.">Tcrnl.</option>
+                                    <option value="Crnl.">Crnl.</option>
+                                    <option value="GraD.">GraD.</option>
+                                    <option value="GraI.">GraI.</option>
+                                    <option value="GraS.">GraS.</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="Cedula">Cédula</label>
@@ -123,5 +147,18 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <!-- Incluye jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- Incluye Select2 JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#rango').select2({
+                    placeholder: "Selecciona una opción",
+                    allowClear: true
+                });
+            });
+        </script>
+
     </body>
 </html>
