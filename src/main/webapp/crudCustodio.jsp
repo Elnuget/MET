@@ -47,7 +47,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                         <%-- Verificación del rol de usuario para mostrar el enlace Usuarios --%>
                         <% if ("admin".equals(rolUsuario)) { %>
                         <a href="crudUsuario.jsp" class="list-group-item list-group-item-action "><i class="fas fa-users"></i> Usuarios</a>
-                       
+
                         <a href="crudTecnico.jsp" class="list-group-item list-group-item-action"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
                         <% } %>
                         <a href="crudCustodio.jsp" class="list-group-item list-group-item-action active" ><i class="fas fa-shield-alt"></i> Gestión de Custodios</a>
@@ -99,7 +99,8 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                     <td><%= custodio.getDistrito() %></td>
                                     <td><%= custodio.getRango() %></td>
                                     <td>
-                                        
+                                        <a class="btn btn-info btn-sm">Editar</a>
+
                                         <a href="DeleteCustodioServlet?id=<%= custodio.getId() %>" onclick="return confirm('¿Estás seguro de querer eliminar este custodio?');" class="btn btn-danger btn-sm">Eliminar</a>
                                     </td>
                                 </tr>

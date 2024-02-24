@@ -35,6 +35,33 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                 min-height: 100vh;
             }
         </style>
+        <style>
+            @media print {
+                /* Oculta todo lo que no quieres imprimir */
+                body * {
+                    visibility: hidden;
+                }
+                /* Solo muestra la tabla y sus elementos */
+                .table, .table * {
+                    visibility: visible;
+                }
+                /* Oculta la columna de acciones */
+                .accion-columna {
+                    display: none;
+                }
+                /* Asegúrate de que la tabla se imprima a tamaño completo */
+                .table {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                }
+            }
+
+
+        </style>
+
+
         <div class="container-fluid">
             <div class="row">
                 <!-- Sidebar -->
@@ -52,7 +79,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                         <%-- Verificación del rol de usuario para mostrar el enlace Usuarios --%>
                         <% if ("admin".equals(rolUsuario)) { %>
                         <a href="crudUsuario.jsp" class="list-group-item list-group-item-action "><i class="fas fa-users"></i> Usuarios</a>
-                        
+
                         <a href="crudTecnico.jsp" class="list-group-item list-group-item-action"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
                         <% } %>
                         <a href="crudCustodio.jsp" class="list-group-item list-group-item-action" ><i class="fas fa-shield-alt"></i> Gestión de Custodios</a>
@@ -67,8 +94,21 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                 <!-- BODY -->
                 <div class="col-md-9 col-lg-10">
                     <h2>Mantenimientos</h2>
+                    <div class="col-md-9 col-lg-10 d-flex justify-content-between align-items-center">
+                        <h2></h2>
+                        <!-- Botón para generar el reporte -->
+                        <button onclick="imprimirTabla()" class="btn btn-success">
+                            <i class="fas fa-print"></i> Generar Reporte
+                        </button>
+                    </div>
                     <div class="my-4">
                         <a href="add-mantenimiento.jsp" class="btn btn-primary">Añadir Mantenimiento</a>
+                    </div>
+
+
+                    <div class="my-4">
+                        <!-- Campo de búsqueda con estilo adicional -->
+                        <input type="text" id="filtroTipo" onkeyup="filtrarMantenimientos()" placeholder="Buscar por tipo..." class="form-control mb-3" style="max-width: 200px; border-radius: 20px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);">
                     </div>
                     <table class="table">
                         <thead class="thead-dark">
@@ -81,7 +121,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                 <th>Observación</th>
                                 <th>Serie</th>
                                 <th>Técnico</th>
-                                <th>Acciones</th>
+                                <th class="accion-columna">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -114,11 +154,11 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                 <td><%= mantenimiento.getObservacion() %></td>
                                 <td><%= nombreRadio %></td>
                                 <td><%= nombreTecnico %></td>
-                                <td>
+                                <td class="accion-columna">
                                     <a href="ImprimirMantenimientoServlet?id=<%= mantenimiento.getPk_id_mantenimiento() %>"  class="btn btn-primary btn-sm">Imprimir</a>
                                     <!-- Suponiendo que estás dentro de un bucle que recorre los mantenimientos -->
                                     <a href="VerificarEntregaServlet?fkIdMantenimiento=<%= mantenimiento.getPk_id_mantenimiento() %>" class="btn btn-success btn-sm">Entregar</a>
-
+                                    <a class="btn btn-info btn-sm">Editar</a>
 
                                     <a href="DeleteMantenimientoServlet?id=<%= mantenimiento.getPk_id_mantenimiento() %>" onclick="return confirm('¿Está seguro que desea eliminar este mantenimiento?');" class="btn btn-danger btn-sm">Eliminar</a>
                                 </td>
@@ -154,5 +194,34 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
             <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+            <script>
+                                        function filtrarMantenimientos() {
+                                            var input, filter, table, tr, td, i, txtValue;
+                                            input = document.getElementById("filtroTipo");
+                                            filter = input.value.toUpperCase();
+                                            table = document.querySelector(".table");
+                                            tr = table.getElementsByTagName("tr");
+
+                                            for (i = 0; i < tr.length; i++) {
+                                                td = tr[i].getElementsByTagName("td")[1]; // Ajustar el índice según la columna que se va a filtrar
+                                                if (td) {
+                                                    txtValue = td.textContent || td.innerText;
+                                                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                                        tr[i].style.display = "";
+                                                    } else {
+                                                        tr[i].style.display = "none";
+                                                    }
+                                                }
+                                            }
+                                        }
+            </script>
+            <script>
+                function imprimirTabla() {
+                    window.print();
+                }
+            </script>
+
+
+
     </body>
 </html>

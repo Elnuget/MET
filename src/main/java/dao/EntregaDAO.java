@@ -69,5 +69,34 @@ public class EntregaDAO {
 
         return existe;
     }
+    public Entrega obtenerEntregaPorMantenimiento(int fk_id_mantenimiento) throws SQLException {
+        String sql = "SELECT * FROM tbl_entrega WHERE fk_id_mantenimiento = ?";
+        Entrega entrega = null;
+
+        try {
+            connect();
+            PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+            statement.setInt(1, fk_id_mantenimiento);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int pk_id_entrega = resultSet.getInt("pk_id_entrega");
+                Date fecha_entrega = resultSet.getDate("fecha_entrega");
+                String observaciones = resultSet.getString("observaciones");
+                // Asumiendo que fk_id_mantenimiento ya lo tienes, no es necesario obtenerlo de nuevo del ResultSet
+
+                entrega = new Entrega(pk_id_entrega, fecha_entrega, observaciones, fk_id_mantenimiento);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            disconnect();
+        }
+
+        return entrega;
+    }
 
 }

@@ -1,6 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="modelos.Usuario"%>
 <%@page import="dao.UsuarioDAO"%>
+<%@page import="modelos.Entrega"%> <!-- Importa el modelo de Entrega -->
+<%@page import="dao.UsuarioDAO"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -47,7 +49,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                         <%-- Verificación del rol de usuario para mostrar el enlace Usuarios --%>
                         <% if ("admin".equals(rolUsuario)) { %>
                         <a href="crudUsuario.jsp" class="list-group-item list-group-item-action  "><i class="fas fa-users"></i> Usuarios</a>
-                        
+
                         <a href="crudTecnico.jsp" class="list-group-item list-group-item-action"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
                         <% } %>
                         <a href="crudCustodio.jsp" class="list-group-item list-group-item-action" ><i class="fas fa-shield-alt"></i> Gestión de Custodios</a>
@@ -61,16 +63,39 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                 <!-- BODY -->
                 <!-- Page Content -->
                 <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                    <script>
+                        function imprimirPagina() {
+                            window.print();
+                        }
+                    </script>
+                    <%
+           Entrega entrega = (Entrega) request.getAttribute("entrega");
+           if (entrega == null) {
+               // Manejo del caso en que no hay datos de entrega
+               out.println("<p>No se encontró información de la entrega.</p>");
+           } else {
+               // Mostrar la información de la entrega
+                    %>
                     <div class="container mt-5">
-                        <h2><%= request.getAttribute("mensaje") %></h2>
-                        El mantenimiento se llevo correctamente acabo queda constancia de la entrega
-                        
-                        
-                        tecnico firma 
-                        Cusodio firma
-                        <a href="crudMantenimiento.jsp">Volver a Mantenimientos</a>
+                        <h3>Información de la Entrega</h3>
+                        <p><strong>Fecha de Entrega:</strong> <%= entrega.getFecha_entrega() %></p>
+                        <p><strong>Observaciones:</strong> <%= entrega.getObservaciones() %></p>
+                        <p><strong>Mantenimiento:</strong> <%= entrega.getFk_id_mantenimiento() %></p>
+                        <!-- Aquí puedes añadir más detalles de la entrega si lo necesitas -->
 
+                        <!-- Espacios para las firmas -->
+                        <div>
+                            <p>Firma del Técnico: ______________________</p>
+                            <p>Firma del Custodio: _____________________</p>
+                        </div>
+
+                        <!-- Botón para imprimir -->
+                        <button class="btn btn-primary" onclick="imprimirPagina()">Imprimir</button>
                     </div>
+                    <%
+                        }
+                    %>
+
                     <!-- El resto de tu contenido aquí -->
                 </div>
             </div>

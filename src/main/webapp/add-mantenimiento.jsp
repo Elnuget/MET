@@ -1,6 +1,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="modelos.Usuario"%>
 <%@page import="dao.UsuarioDAO"%>
+<%@page import="modelos.Usuario"%>
+<%@page import="dao.UsuarioDAO"%>
+<%@page import="java.util.List"%>
+<%@page import="modelos.Tecnico"%>
+<%@page import="dao.TecnicoDAO"%>
+<%@page import="modelos.Radio"%>
+<%@page import="dao.RadioDAO"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -87,12 +94,34 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                 <textarea class="form-control" id="Observación" name="Observación" rows="3" required></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="fk_id_radio">ID de Radio (Referencia)</label>
-                                <input type="number" class="form-control" id="fk_id_radio" name="fk_id_radio">
+                                <label for="fk_id_radio">Radio (Serie)</label>
+                                <select class="form-control" id="fk_id_radio" name="fk_id_radio" required>
+                                    <% 
+                                        String jdbcURL = "jdbc:mysql://localhost:3306/met";
+                                        String jdbcUsername = "root";
+                                        String jdbcPassword = "";
+                                    List<Radio> radios = new RadioDAO(jdbcURL, jdbcUsername, jdbcPassword).selectAllRadios();
+                                    for (Radio radio : radios) {
+                                    %>
+                                    <option value="<%= radio.getPk_id_radio() %>"><%= radio.getSerie() %></option>
+                                    <% 
+                                    }
+                                    %>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="fk_id_tecnico">ID de Técnico (Referencia)</label>
-                                <input type="number" class="form-control" id="fk_id_tecnico" name="fk_id_tecnico">
+                                <label for="fk_id_tecnico">Técnico</label>
+                                <select class="form-control" id="fk_id_tecnico" name="fk_id_tecnico" required>
+                                    <% 
+                                    TecnicoDAO tecnicoDao = new TecnicoDAO();
+                                    List<Tecnico> tecnicos = tecnicoDao.selectAllTecnicos();
+                                    for (Tecnico tecnico : tecnicos) {
+                                    %>
+                                    <option value="<%= tecnico.getId() %>"><%= tecnico.getNombres() %></option>
+                                    <% 
+                                    }
+                                    %>
+                                </select>
                             </div>
                             <button type="submit" class="btn btn-primary">Añadir Mantenimiento</button>
                         </form>

@@ -106,7 +106,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                     <td><%= radio.getSerie() %></td>
                                     <td><%= nombreCustodio %></td>
                                     <td>
-
+<a class="btn btn-info btn-sm">Editar</a>
                                         <a href="DeleteRadioServlet?id=<%= radio.getPk_id_radio() %>" onclick="return confirm('¿Está seguro que desea eliminar este radio?');" class="btn btn-danger btn-sm">Eliminar</a>
                                     </td>
                                 </tr>
