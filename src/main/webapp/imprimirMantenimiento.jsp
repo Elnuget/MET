@@ -1,7 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.List"%>
 <%@page import="modelos.Mantenimiento"%>
-<%@page import="modelos.Usuario"%>
-<%@page import="dao.UsuarioDAO"%>
+<%@page import="dao.MantenimientoDAO"%>
+<%@page import="modelos.Radio"%>
+<%@page import="dao.RadioDAO"%>
+<%@page import="modelos.Tecnico"%>
+<%@page import="dao.TecnicoDAO"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -19,13 +23,17 @@
             }
             .mantenimiento-details {
                 margin-top: 20px;
+                width: 100%; /* Asegura que la tabla ocupe todo el ancho disponible */
+                border-collapse: collapse; /* Elimina el espacio entre los bordes de las celdas */
+            }
+            .mantenimiento-details th, .mantenimiento-details td {
+                border: 1px solid black; /* Agrega un borde sólido negro a las celdas */
+                text-align: center; /* Centra el texto en las celdas */
+                padding: 8px; /* Agrega un poco de padding para que el contenido no esté pegado al borde */
             }
             .mantenimiento-details th {
-                text-align: left;
-                padding-right: 20px;
-            }
-            .mantenimiento-details td {
-                padding-top: 5px;
+                background-color: #f2f2f2; /* Agrega un color de fondo a los encabezados para diferenciarlos */
+                text-align: left; /* Mantiene el texto de los encabezados alineado a la izquierda */
             }
             @media print {
                 .no-print {
@@ -33,6 +41,7 @@
                 }
             }
         </style>
+
     </head>
     <body>
         <!-- HEADER -->
@@ -79,48 +88,82 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                     </div>
                 </div>
                 <!-- HEADER -->
-                 <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div class="mantenimiento-container">
-            <h2>Detalle de Mantenimiento</h2>
-            <table class="mantenimiento-details">
-                <tr>
-                    <th>ID:</th>
-                    <td><%= ((Mantenimiento)request.getAttribute("mantenimiento")).getPk_id_mantenimiento() %></td>
-                </tr>
-                <tr>
-                    <th>Tipo:</th>
-                    <td><%= ((Mantenimiento)request.getAttribute("mantenimiento")).getTipo() %></td>
-                </tr>
-                <tr>
-                    <th>Descripción:</th>
-                    <td><%= ((Mantenimiento)request.getAttribute("mantenimiento")).getDescripcion() %></td>
-                </tr>
-                <tr>
-                    <th>Fecha Recepción:</th>
-                    <td><%= ((Mantenimiento)request.getAttribute("mantenimiento")).getFecha_recepcion() %></td>
-                </tr>
-                <tr>
-                    <th>Observación:</th>
-                    <td><%= ((Mantenimiento)request.getAttribute("mantenimiento")).getObservacion() %></td>
-                </tr>
-                <tr>
-                    <th>Radio ID:</th>
-                    <td><%= ((Mantenimiento)request.getAttribute("mantenimiento")).getFk_id_radio() != null ? ((Mantenimiento)request.getAttribute("mantenimiento")).getFk_id_radio().toString() : "N/A" %></td>
-                </tr>
-                <tr>
-                    <th>Técnico ID:</th>
-                    <td><%= ((Mantenimiento)request.getAttribute("mantenimiento")).getFk_id_tecnico() != null ? ((Mantenimiento)request.getAttribute("mantenimiento")).getFk_id_tecnico().toString() : "N/A" %></td>
-                </tr>
-            </table>
-            <div class="no-print">
-                <button onclick="window.print()">Imprimir</button>
-                <button onclick="history.back()">Volver</button>
-            </div>
-                 </div>
+                <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                    <div class="mantenimiento-container">
+                        <h2>Detalle de Mantenimiento</h2>
+                        <table class="mantenimiento-details">
+                            <tr>
+                                <th>ID:</th>
+                                <td><%= ((Mantenimiento)request.getAttribute("mantenimiento")).getPk_id_mantenimiento() %></td>
+                            </tr>
+                            <tr>
+                                <th>Tipo:</th>
+                                <td><%= ((Mantenimiento)request.getAttribute("mantenimiento")).getTipo() %></td>
+                            </tr>
+                            <tr>
+                                <th>Descripción:</th>
+                                <td><%= ((Mantenimiento)request.getAttribute("mantenimiento")).getDescripcion() %></td>
+                            </tr>
+                            <tr>
+                                <th>Fecha Recepción:</th>
+                                <td><%= ((Mantenimiento)request.getAttribute("mantenimiento")).getFecha_recepcion() %></td>
+                            </tr>
+                            <tr>
+                                <th>Observación:</th>
+                                <td><%= ((Mantenimiento)request.getAttribute("mantenimiento")).getObservacion() %></td>
+                            </tr>
+                            <%
+            // Suponiendo que ya tienes acceso a las instancias de RadioDAO y TecnicoDAO aquí
+            // Puedes adaptar este código para obtenerlos según cómo los manejes en tu aplicación
+
+            // Obtener el mantenimiento desde el request
+            String jdbcURL = "jdbc:mysql://localhost:3306/met";
+                                String jdbcUsername = "root";
+                                String jdbcPassword = "";
+            Mantenimiento mantenimiento = (Mantenimiento) request.getAttribute("mantenimiento");
+MantenimientoDAO mantenimientoDao = new MantenimientoDAO(jdbcURL, jdbcUsername, jdbcPassword);
+RadioDAO radioDao = new RadioDAO(jdbcURL, jdbcUsername, jdbcPassword);
+TecnicoDAO tecnicoDao = new TecnicoDAO();
+
+            // Inicializar variables para la serie de la radio y el nombre del técnico
+            String serieRadio = "N/A";
+            String nombreTecnico = "N/A";
+
+            // Verificar si el mantenimiento tiene asignado un radio y un técnico
+            if (mantenimiento.getFk_id_radio() != null) {
+                Radio radio = radioDao.findradioById(mantenimiento.getFk_id_radio());
+                if (radio != null) {
+                    serieRadio = radio.getSerie(); // Asumiendo que el método para obtener la serie se llama getSerie()
+                }
+            }
+
+            if (mantenimiento.getFk_id_tecnico() != null) {
+                Tecnico tecnico = tecnicoDao.findtecnicoById(mantenimiento.getFk_id_tecnico());
+                if (tecnico != null) {
+                    nombreTecnico = tecnico.getNombres(); // Asumiendo que el método para obtener el nombre se llama getNombres()
+                }
+            }
+                            %>
+
+                            <tr>
+                                <th>Serie de Radio:</th>
+                                <td><%= serieRadio %></td>
+                            </tr>
+                            <tr>
+                                <th>Nombre del Técnico:</th>
+                                <td><%= nombreTecnico %></td>
+                            </tr>
+
+                        </table>
+                       <div class="no-print">
+    <button onclick="window.print()" class="btn btn-primary">Imprimir</button>
+    <button onclick="history.back()" class="btn btn-secondary">Volver</button>
+</div>
+                    </div>
+                </div>
             </div>
         </div>
-        </div>
-                 <!-- BODY -->
+        <!-- BODY -->
         <!-- FOOTER -->
         <style>
             .imagen-fondo {

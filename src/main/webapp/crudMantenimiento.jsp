@@ -197,13 +197,13 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
             <script>
                                         function filtrarMantenimientos() {
                                             var input, filter, table, tr, td, i, txtValue;
-                                            input = document.getElementById("filtroTipo");
+                                            input = document.getElementById("filtroTipo"); // Asegúrate de que el ID del input de búsqueda sea correcto
                                             filter = input.value.toUpperCase();
                                             table = document.querySelector(".table");
                                             tr = table.getElementsByTagName("tr");
 
                                             for (i = 0; i < tr.length; i++) {
-                                                td = tr[i].getElementsByTagName("td")[1]; // Ajustar el índice según la columna que se va a filtrar
+                                                td = tr[i].getElementsByTagName("td")[5]; // Cambio el índice a 5 para apuntar a la columna 'Serie' de la radio
                                                 if (td) {
                                                     txtValue = td.textContent || td.innerText;
                                                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -214,6 +214,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                                 }
                                             }
                                         }
+
             </script>
             <script>
                 function imprimirTabla() {

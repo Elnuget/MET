@@ -77,20 +77,41 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                // Mostrar la información de la entrega
                     %>
                     <div class="container mt-5">
-                        <h3>Información de la Entrega</h3>
-                        <p><strong>Fecha de Entrega:</strong> <%= entrega.getFecha_entrega() %></p>
-                        <p><strong>Observaciones:</strong> <%= entrega.getObservaciones() %></p>
-                        <p><strong>Mantenimiento:</strong> <%= entrega.getFk_id_mantenimiento() %></p>
-                        <!-- Aquí puedes añadir más detalles de la entrega si lo necesitas -->
+                        <!-- BODY -->
+                        <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                            <h2>Detalle de Entrega</h2>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th>Fecha de Entrega</th>
+                                        <td><%= entrega.getFecha_entrega() %></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Observaciones</th>
+                                        <td><%= entrega.getObservaciones() %></td>
+                                    </tr>
+                                    <tr>
+                                        <th>ID de Mantenimiento</th>
+                                        <td><%= entrega.getFk_id_mantenimiento() %></td>
+                                    </tr>
+                                    <!-- Agrega más filas según sea necesario -->
+                                </tbody>
+                            </table>
 
-                        <!-- Espacios para las firmas -->
-                        <div>
-                            <p>Firma del Técnico: ______________________</p>
-                            <p>Firma del Custodio: _____________________</p>
+                            <!-- Espacios para las firmas (si se requiere) -->
+                            <div>
+                                <p>Firma del Técnico: ______________________</p>
+                                <p>Firma del Custodio: _____________________</p>
+                            </div>
+
+                            <!-- Botones -->
+                            <div class="mt-3">
+                                <button class="btn btn-primary" onclick="window.print()">Imprimir</button>
+                                <a href="javascript:history.back()" class="btn btn-secondary">Volver</a>
+                            </div>
                         </div>
+                        <!-- El resto del contenido de tu página -->
 
-                        <!-- Botón para imprimir -->
-                        <button class="btn btn-primary" onclick="imprimirPagina()">Imprimir</button>
                     </div>
                     <%
                         }
