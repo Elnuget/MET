@@ -32,6 +32,13 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                 min-height: 100vh;
             }
         </style>
+        <style>
+            body {
+                background: linear-gradient(to right, #00c6ff 0%, #ffffff 100%);
+                /* Un gradiente que comienza con un azul intenso (#00c6ff) y termina en blanco (#ffffff) */
+            }
+            /* Mantén el resto de tus estilos aquí */
+        </style>
         <div class="container-fluid">
             <div class="row">
                 <!-- Sidebar -->
