@@ -95,7 +95,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                 <label for="Fecha_recepción">Fecha de Recepción</label>
                                 <input type="date" class="form-control" id="Fecha_recepción" name="Fecha_recepción" required>
                             </div>
-
+                            <input type="hidden" id="fk_id_usuario" name="fk_id_usuario" value="<%= nombreUsuarioLogueado %>" required>
                             <div class="form-group">
                                 <label for="Observación">Observación</label>
                                 <textarea class="form-control" id="Observación" name="Observación" rows="3" required></textarea>

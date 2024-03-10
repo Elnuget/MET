@@ -3,6 +3,7 @@ package modelos;
 import java.util.Date;
 
 public class Mantenimiento {
+
     private int pk_id_mantenimiento;
     private String tipo;
     private String descripcion;
@@ -11,21 +12,23 @@ public class Mantenimiento {
     private String observacion;
     private Integer fk_id_radio; // Integer para permitir null en caso de no asignarse
     private Integer fk_id_tecnico; // Integer para permitir null en caso de no asignarse
+    private String fk_id_usuario;
 
     // Constructor vacío
     public Mantenimiento() {
     }
 
     // Constructor con todos los atributos
-    public Mantenimiento(int pk_id_mantenimiento, String tipo, String descripcion, Date fecha_recepcion, String observacion, Integer fk_id_radio, Integer fk_id_tecnico) {
+    public Mantenimiento(int pk_id_mantenimiento, String tipo, String descripcion, Date fecha_recepcion, String observacion, Integer fk_id_radio, Integer fk_id_tecnico, String fk_id_usuario) {
         this.pk_id_mantenimiento = pk_id_mantenimiento;
         this.tipo = tipo;
         this.descripcion = descripcion;
         this.fecha_recepcion = fecha_recepcion;
-       
+
         this.observacion = observacion;
         this.fk_id_radio = fk_id_radio;
         this.fk_id_tecnico = fk_id_tecnico;
+        this.fk_id_usuario = fk_id_usuario;
     }
 
     // Getters y Setters
@@ -61,8 +64,6 @@ public class Mantenimiento {
         this.fecha_recepcion = fecha_recepcion;
     }
 
-   
-
     public String getObservacion() {
         return observacion;
     }
@@ -87,20 +88,27 @@ public class Mantenimiento {
         this.fk_id_tecnico = fk_id_tecnico;
     }
 
+    public String getFk_id_usuario() {
+        return fk_id_usuario;
+    }
+
+    public void setFk_id_usuario(String fk_id_usuario) {
+        this.fk_id_usuario = fk_id_usuario;
+    }
+
     // Método toString para la representación de texto del objeto
     @Override
     public String toString() {
-        return "Mantenimiento{" +
-                "pk_id_mantenimiento=" + pk_id_mantenimiento +
-                ", tipo='" + tipo + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", fecha_recepcion=" + fecha_recepcion +
-                
-                ", observacion='" + observacion + '\'' +
-                ", fk_id_radio=" + fk_id_radio +
-                ", fk_id_tecnico=" + fk_id_tecnico +
-                '}';
+        return "Mantenimiento{"
+                + "pk_id_mantenimiento=" + pk_id_mantenimiento
+                + ", tipo='" + tipo + '\''
+                + ", descripcion='" + descripcion + '\''
+                + ", fecha_recepcion=" + fecha_recepcion
+                + ", observacion='" + observacion + '\''
+                + ", fk_id_radio=" + fk_id_radio
+                + ", fk_id_tecnico=" + fk_id_tecnico
+                + ", fk_id_usuario=" + fk_id_usuario
+                + '}';
     }
 
-    
 }

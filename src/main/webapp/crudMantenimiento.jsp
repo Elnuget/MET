@@ -1,5 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+
 <%@page import="modelos.Mantenimiento"%>
 <%@page import="dao.MantenimientoDAO"%>
 <%@page import="modelos.Radio"%>
@@ -128,51 +130,70 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                 <th>Observación</th>
                                 <th>Serie</th>
                                 <th>Técnico</th>
+
                                 <th class="accion-columna">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <%
-                                String jdbcURL = "jdbc:mysql://localhost:3306/met";
-                                String jdbcUsername = "root";
-                                String jdbcPassword = "";
-                                MantenimientoDAO mantenimientoDao = new MantenimientoDAO(jdbcURL, jdbcUsername, jdbcPassword);
-                                RadioDAO radioDao = new RadioDAO(jdbcURL, jdbcUsername, jdbcPassword);
-                                TecnicoDAO tecnicoDao = new TecnicoDAO();
-                                List<Mantenimiento> listMantenimientos = mantenimientoDao.selectAllMantenimientos();
-                                for(Mantenimiento mantenimiento : listMantenimientos) {
+                             String jdbcURL = "jdbc:mysql://localhost:3306/met";
+                            String jdbcUsername = "root";
+                            String jdbcPassword = "";
+                            MantenimientoDAO mantenimientoDao = new MantenimientoDAO(jdbcURL, jdbcUsername, jdbcPassword);
+                            RadioDAO radioDao = new RadioDAO(jdbcURL, jdbcUsername, jdbcPassword);
+                            TecnicoDAO tecnicoDao = new TecnicoDAO();
+                            List<Mantenimiento> listMantenimientos = mantenimientoDao.selectAllMantenimientos();
+                            // Verificación del rol de usuario para mostrar datos o un mensaje de restricción
+                            if (!"admin".equals(rolUsuario)) {
+                            // Filtrar mantenimientos para el usuario logueado si no es admin
+                    List<Mantenimiento> listMantenimientosFiltrados = new ArrayList<>();
+                    for(Mantenimiento mantenimiento : listMantenimientos) {
+                        if(nombreUsuarioLogueado.equals(mantenimiento.getFk_id_usuario())) {
+                            listMantenimientosFiltrados.add(mantenimiento);
+                        }
+                    }
+                    listMantenimientos = listMantenimientosFiltrados; // Usar la lista filtrada
+                            %>
+                        <div class="alert alert-warning" role="alert">
+                            DATOS POR USUARIO
+                        </div>
+                        <%
+                            
+                            }
+                            for(Mantenimiento mantenimiento : listMantenimientos) {
                                 String nombreRadio = "Sin asignar"; //
                                 String nombreTecnico = "Sin asignar"; //
                                  if (mantenimiento.getFk_id_radio() != null && mantenimiento.getFk_id_tecnico() != null) {
-        Radio radio = radioDao.findradioById(mantenimiento.getFk_id_radio());
-        Tecnico tecnico = tecnicoDao.findtecnicoById(mantenimiento.getFk_id_tecnico());
-        if (radio != null && tecnico!= null) {
-            nombreRadio = radio.getSerie(); // O el método adecuado para obtener el nombre del custodio
-            nombreTecnico = tecnico.getNombres();
-        }
-    }
-                            %>
-                            <tr>
-                                <td><%= mantenimiento.getPk_id_mantenimiento() %></td>
-                                <td><%= mantenimiento.getTipo() %></td>
-                                <td><%= mantenimiento.getDescripcion() %></td>
-                                <td><%= mantenimiento.getFecha_recepcion() %></td>
-
-                                <td><%= mantenimiento.getObservacion() %></td>
-                                <td><%= nombreRadio %></td>
-                                <td><%= nombreTecnico %></td>
-                                <td class="accion-columna">
-                                    <a href="ImprimirMantenimientoServlet?id=<%= mantenimiento.getPk_id_mantenimiento() %>"  class="btn btn-primary btn-sm">Imprimir</a>
-                                    <!-- Suponiendo que estás dentro de un bucle que recorre los mantenimientos -->
-                                    <a href="VerificarEntregaServlet?fkIdMantenimiento=<%= mantenimiento.getPk_id_mantenimiento() %>" class="btn btn-success btn-sm">Entregar</a>
-                                    <a class="btn btn-info btn-sm">Editar</a>
-
-                                    <a href="DeleteMantenimientoServlet?id=<%= mantenimiento.getPk_id_mantenimiento() %>" onclick="return confirm('¿Está seguro que desea eliminar este mantenimiento?');" class="btn btn-danger btn-sm">Eliminar</a>
-                                </td>
-                            </tr>
-                            <%
+                                    Radio radio = radioDao.findradioById(mantenimiento.getFk_id_radio());
+                                    Tecnico tecnico = tecnicoDao.findtecnicoById(mantenimiento.getFk_id_tecnico());
+                                    if (radio != null && tecnico!= null) {
+                                        nombreRadio = radio.getSerie(); // O el método adecuado para obtener el nombre del custodio
+                                        nombreTecnico = tecnico.getNombres();
+                                    }
                                 }
-                            %>
+                        %>
+                        <tr>
+                            <td><%= mantenimiento.getPk_id_mantenimiento() %></td>
+                            <td><%= mantenimiento.getTipo() %></td>
+                            <td><%= mantenimiento.getDescripcion() %></td>
+                            <td><%= mantenimiento.getFecha_recepcion() %></td>
+
+                            <td><%= mantenimiento.getObservacion() %></td>
+                            <td><%= nombreRadio %></td>
+                            <td><%= nombreTecnico %></td>
+                            <td class="accion-columna">
+                                <a href="ImprimirMantenimientoServlet?id=<%= mantenimiento.getPk_id_mantenimiento() %>"  class="btn btn-primary btn-sm">Imprimir</a>
+                                <!-- Suponiendo que estás dentro de un bucle que recorre los mantenimientos -->
+                                <a href="VerificarEntregaServlet?fkIdMantenimiento=<%= mantenimiento.getPk_id_mantenimiento() %>" class="btn btn-success btn-sm">Entregar</a>
+                                <a class="btn btn-info btn-sm">Editar</a>
+
+                                <a href="DeleteMantenimientoServlet?id=<%= mantenimiento.getPk_id_mantenimiento() %>" onclick="return confirm('¿Está seguro que desea eliminar este mantenimiento?');" class="btn btn-danger btn-sm">Eliminar</a>
+                            </td>
+                        </tr>
+                        <%
+                            }
+                                
+                        %>
                         </tbody>
                     </table>
                 </div>

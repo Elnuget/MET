@@ -38,7 +38,7 @@ public class MantenimientoDAO {
     }
 
     public boolean insertMantenimiento(Mantenimiento mantenimiento) throws SQLException {
-        String sql = "INSERT INTO tbl_mantenimiento (Tipo, Descripción, Fecha_recepción, Observación, fk_id_radio, fk_id_tecnico) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tbl_mantenimiento (Tipo, Descripción, Fecha_recepción, Observación, fk_id_radio, fk_id_tecnico, fk_id_usuario) VALUES (?, ?, ?, ?, ?, ?, ?)";
         connect();
 
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
@@ -55,6 +55,11 @@ public class MantenimientoDAO {
             statement.setInt(6, mantenimiento.getFk_id_tecnico()); // Y finalmente el índice 6
         } else {
             statement.setNull(6, Types.INTEGER);
+        }
+        if (mantenimiento.getFk_id_usuario() != null) {
+            statement.setString(7, mantenimiento.getFk_id_usuario()); // Y finalmente el índice 6
+        } else {
+            statement.setNull(7, Types.INTEGER);
         }
 
         boolean rowInserted = statement.executeUpdate() > 0;
@@ -86,8 +91,8 @@ public class MantenimientoDAO {
             if (resultSet.wasNull()) {
                 fk_id_tecnico = null;
             }
-
-            mantenimientos.add(new Mantenimiento(id, tipo, descripcion, fecha_recepcion, observacion, fk_id_radio, fk_id_tecnico));
+            String fk_id_usuario = resultSet.getString("fk_id_usuario");
+            mantenimientos.add(new Mantenimiento(id, tipo, descripcion, fecha_recepcion, observacion, fk_id_radio, fk_id_tecnico, fk_id_usuario));
         }
 
         resultSet.close();
@@ -128,8 +133,9 @@ public class MantenimientoDAO {
             String observacion = resultSet.getString("Observación");
             Integer fk_id_radio = (Integer) resultSet.getObject("fk_id_radio");
             Integer fk_id_tecnico = (Integer) resultSet.getObject("fk_id_tecnico");
+            String fk_id_usuario = resultSet.getString("fk_id_usuario");
 
-            mantenimiento = new Mantenimiento(pk_id_mantenimiento, tipo, descripcion, fecha_recepcion, observacion, fk_id_radio, fk_id_tecnico);
+            mantenimiento = new Mantenimiento(pk_id_mantenimiento, tipo, descripcion, fecha_recepcion, observacion, fk_id_radio, fk_id_tecnico, fk_id_usuario);
         }
 
         resultSet.close();
