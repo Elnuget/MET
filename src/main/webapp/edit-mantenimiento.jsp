@@ -1,6 +1,24 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="modelos.Usuario"%>
-<%@page import="dao.UsuarioDAO"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.text.SimpleDateFormat"%>
+
+<%@page import="modelos.Mantenimiento"%>
+<%@page import="dao.MantenimientoDAO"%>
+<%@page import="modelos.Radio"%>
+<%@page import="dao.RadioDAO"%>
+<%@page import="modelos.Tecnico"%>
+<%@page import="dao.TecnicoDAO"%>
+<%
+    MantenimientoDAO mantenimientoDao = new MantenimientoDAO("jdbc:mysql://localhost:3306/met", "root", "");
+    String idStr = request.getParameter("id");
+    Mantenimiento mantenimiento = null;
+    if (idStr != null && !idStr.isEmpty()) {
+        int id = Integer.parseInt(idStr);
+        mantenimiento = mantenimientoDao.getMantenimiento(id).orElse(new Mantenimiento());
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -54,12 +72,13 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                         <%-- Verificación del rol de usuario para mostrar el enlace Usuarios --%>
                         <% if ("admin".equals(rolUsuario)) { %>
                         <a href="crudUsuario.jsp" class="list-group-item list-group-item-action "><i class="fas fa-users"></i> Usuarios</a>
-                        
-                        <a href="crudTecnico.jsp" class="list-group-item list-group-item-action active"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
-                        <% } %>
+
+
+                        <a href="crudTecnico.jsp" class="list-group-item list-group-item-action"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
+                        <% } %> 
                         <a href="crudCustodio.jsp" class="list-group-item list-group-item-action" ><i class="fas fa-shield-alt"></i> Gestión de Custodios</a>
                         <a href="crudRadio.jsp" class="list-group-item list-group-item-action"><i class="fas fa-broadcast-tower"></i> Gestión de Radios</a> 
-                        <a href="crudMantenimiento.jsp" class="list-group-item list-group-item-action"><i class="fas fa-wrench"></i> Gestión de Mantenimientos</a>
+                        <a href="crudMantenimiento.jsp" class="list-group-item list-group-item-action active"><i class="fas fa-wrench"></i> Gestión de Mantenimientos</a>
                         <a href="LogoutServlet" class="list-group-item list-group-item-action text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
 
                     </div>
@@ -69,23 +88,47 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                 <!-- Page Content -->
                 <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     <div class="container mt-5">
-        <h2>Añadir Técnico</h2>
-        <form action="AddTecnicoServlet" method="POST">
+                       <h2>Editar Mantenimiento</h2>
+        <form action="EditMantenimientoServlet" method="post">
+            
+            <input type="hidden" name="id" value="<%= mantenimiento != null ? mantenimiento.getPk_id_mantenimiento() : "" %>" />
+            
             <div class="form-group">
-                <label for="Nombres">Nombres</label>
-                <input type="text" class="form-control" id="Nombres" name="Nombres" required>
+                <label for="Tipo">Tipo:</label>
+                <select class="form-control" name="Tipo" id="Tipo">
+                    <option>Preventivo</option>
+                    <option <% if ("Correctivo".equals(mantenimiento.getTipo())) { %>selected<% } %>>Correctivo</option>
+                </select>
             </div>
+            
             <div class="form-group">
-                <label for="Cedula">Cédula</label>
-                <input type="text" class="form-control" id="Cedula" name="Cedula" required>
+                <label for="Descripcion">Descripción:</label>
+                <textarea class="form-control" name="Descripcion" id="Descripcion" rows="3"><%= mantenimiento != null ? mantenimiento.getDescripcion() : "" %></textarea>
             </div>
+            
             <div class="form-group">
-                <label for="Celular">Celular</label>
-                <input type="text" class="form-control" id="Celular" name="Celular" required>
+                <label for="Fecha_recepcion">Fecha de Recepción:</label>
+                <input type="date" class="form-control" name="Fecha_recepcion" id="Fecha_recepcion" value="<%= mantenimiento != null && mantenimiento.getFecha_recepcion() != null ? new SimpleDateFormat("yyyy-MM-dd").format(mantenimiento.getFecha_recepcion()) : "" %>" />
             </div>
-            <button type="submit" class="btn btn-primary">Añadir Técnico</button>
+            <input type="hidden" id="fk_id_usuario" name="fk_id_usuario" value="<%= nombreUsuarioLogueado %>" required>
+            <div class="form-group">
+                <label for="Observacion">Observación:</label>
+                <textarea class="form-control" name="Observacion" id="Observacion" rows="3"><%= mantenimiento != null ? mantenimiento.getObservacion() : "" %></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="fk_id_radio">ID de Radio:</label>
+                <input type="number" class="form-control" name="fk_id_radio" id="fk_id_radio" value="<%= mantenimiento != null && mantenimiento.getFk_id_radio() != null ? mantenimiento.getFk_id_radio() : "" %>" />
+            </div>
+            
+            <div class="form-group">
+                <label for="fk_id_tecnico">ID de Técnico:</label>
+                <input type="number" class="form-control" name="fk_id_tecnico" id="fk_id_tecnico" value="<%= mantenimiento != null && mantenimiento.getFk_id_tecnico() != null ? mantenimiento.getFk_id_tecnico() : "" %>" />
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Actualizar</button>
         </form>
-    </div>
+                    </div>
                     <!-- El resto de tu contenido aquí -->
                 </div>
             </div>

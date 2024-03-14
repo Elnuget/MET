@@ -1,6 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="modelos.Usuario"%>
 <%@page import="dao.UsuarioDAO"%>
+<%@page import="modelos.Tecnico"%>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -69,22 +71,24 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                 <!-- Page Content -->
                 <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     <div class="container mt-5">
-        <h2>Añadir Técnico</h2>
-        <form action="AddTecnicoServlet" method="POST">
-            <div class="form-group">
-                <label for="Nombres">Nombres</label>
-                <input type="text" class="form-control" id="Nombres" name="Nombres" required>
-            </div>
-            <div class="form-group">
-                <label for="Cedula">Cédula</label>
-                <input type="text" class="form-control" id="Cedula" name="Cedula" required>
-            </div>
-            <div class="form-group">
-                <label for="Celular">Celular</label>
-                <input type="text" class="form-control" id="Celular" name="Celular" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Añadir Técnico</button>
-        </form>
+        <h2>Editar Técnico</h2>
+    <form action="EditTecnicoServlet" method="POST">
+        <% Tecnico tecnico = (Tecnico) request.getAttribute("tecnico"); %>
+        <input type="hidden" name="id" value="<%= tecnico.getId() %>">
+        <div class="form-group">
+            <label for="Nombres">Nombres</label>
+            <input type="text" class="form-control" id="Nombres" name="Nombres" required value="<%= tecnico.getNombres() %>">
+        </div>
+        <div class="form-group">
+            <label for="Cedula">Cédula</label>
+            <input type="text" class="form-control" id="Cedula" name="Cedula" required value="<%= tecnico.getCedula() %>">
+        </div>
+        <div class="form-group">
+            <label for="Celular">Celular</label>
+            <input type="text" class="form-control" id="Celular" name="Celular" required value="<%= tecnico.getCelular() %>">
+        </div>
+        <button type="submit" class="btn btn-primary">Actualizar Técnico</button>
+    </form>
     </div>
                     <!-- El resto de tu contenido aquí -->
                 </div>

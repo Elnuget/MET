@@ -144,6 +144,33 @@ public class MantenimientoDAO {
 
         return Optional.ofNullable(mantenimiento);
     }
+    public boolean updateMantenimiento(Mantenimiento mantenimiento) throws SQLException {
+        String sql = "UPDATE tbl_mantenimiento SET Tipo = ?, Descripción = ?, Fecha_recepción = ?, Observación = ?, fk_id_radio = ?, fk_id_tecnico = ?, fk_id_usuario = ? WHERE pk_id_mantenimiento = ?";
+        connect();
 
+        try (PreparedStatement statement = jdbcConnection.prepareStatement(sql)) {
+            statement.setString(1, mantenimiento.getTipo());
+            statement.setString(2, mantenimiento.getDescripcion());
+            statement.setDate(3, new java.sql.Date(mantenimiento.getFecha_recepcion().getTime()));
+            statement.setString(4, mantenimiento.getObservacion());
+            if (mantenimiento.getFk_id_radio() != null) {
+                statement.setInt(5, mantenimiento.getFk_id_radio());
+            } else {
+                statement.setNull(5, java.sql.Types.INTEGER);
+            }
+            if (mantenimiento.getFk_id_tecnico() != null) {
+                statement.setInt(6, mantenimiento.getFk_id_tecnico());
+            } else {
+                statement.setNull(6, java.sql.Types.INTEGER);
+            }
+            statement.setString(7, mantenimiento.getFk_id_usuario());
+            statement.setInt(8, mantenimiento.getPk_id_mantenimiento());
+
+            boolean rowUpdated = statement.executeUpdate() > 0;
+            return rowUpdated;
+        } finally {
+            disconnect();
+        }
+    }
     // Implementa los métodos deleteMantenimiento, updateMantenimiento, y getMantenimiento siguiendo el patrón del UsuarioDAO.
 }

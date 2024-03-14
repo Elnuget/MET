@@ -32,9 +32,9 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
         </style>
         <style>
             body {
-                background: linear-gradient(to right, #00c6ff 0%, #ffffff 100%);
-                /* Un gradiente que comienza con un azul intenso (#00c6ff) y termina en blanco (#ffffff) */
-            }
+    background: #b3e5fc; /* Celeste claro */
+}
+
             /* Mantén el resto de tus estilos aquí */
         </style>
         <div class="container-fluid">
@@ -78,6 +78,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                             <thead class="thead-dark">
                                 <tr>
                                     <th>ID</th>
+                                    <th>Grado</th>
                                     <th>Nombres</th>
                                     <th>Cédula</th>
                                     <th>Celular</th>
@@ -85,7 +86,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                     <th>Correo</th>
                                     <th>Subzona</th>
                                     <th>Distrito</th>
-                                    <th>Grado</th>
+                                    
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -97,6 +98,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                 %>
                                 <tr>
                                     <td><%= custodio.getId() %></td>
+                                    <td><%= custodio.getRango() %></td>
                                     <td><%= custodio.getNombres() %></td>
                                     <td><%= custodio.getCedula() %></td>
                                     <td><%= custodio.getCelular() %></td>
@@ -104,9 +106,10 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                     <td><%= custodio.getCorreo() %></td>
                                     <td><%= custodio.getSubzona() %></td>
                                     <td><%= custodio.getDistrito() %></td>
-                                    <td><%= custodio.getRango() %></td>
+                                    
                                     <td>
-                                        <a class="btn btn-info btn-sm">Editar</a>
+                                        <a href="LoadCustodioServlet?id=<%= custodio.getId() %>" class="btn btn-info btn-sm">Editar</a>
+
 
                                         <a href="DeleteCustodioServlet?id=<%= custodio.getId() %>" onclick="return confirm('¿Estás seguro de querer eliminar este custodio?');" class="btn btn-danger btn-sm">Eliminar</a>
                                     </td>

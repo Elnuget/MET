@@ -1,6 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="modelos.Usuario"%>
 <%@page import="dao.UsuarioDAO"%>
+<%@page import="modelos.Custodio"%>
+<%@page import="dao.CustodioDAO"%>
+<%@page import="modelos.Radio"%>
+<% Radio radio = (Radio) request.getAttribute("radio"); %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -54,11 +59,11 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                         <%-- Verificación del rol de usuario para mostrar el enlace Usuarios --%>
                         <% if ("admin".equals(rolUsuario)) { %>
                         <a href="crudUsuario.jsp" class="list-group-item list-group-item-action "><i class="fas fa-users"></i> Usuarios</a>
-                        
-                        <a href="crudTecnico.jsp" class="list-group-item list-group-item-action active"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
+
+                        <a href="crudTecnico.jsp" class="list-group-item list-group-item-action"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
                         <% } %>
                         <a href="crudCustodio.jsp" class="list-group-item list-group-item-action" ><i class="fas fa-shield-alt"></i> Gestión de Custodios</a>
-                        <a href="crudRadio.jsp" class="list-group-item list-group-item-action"><i class="fas fa-broadcast-tower"></i> Gestión de Radios</a> 
+                        <a href="crudRadio.jsp" class="list-group-item list-group-item-action active"><i class="fas fa-broadcast-tower"></i> Gestión de Radios</a> 
                         <a href="crudMantenimiento.jsp" class="list-group-item list-group-item-action"><i class="fas fa-wrench"></i> Gestión de Mantenimientos</a>
                         <a href="LogoutServlet" class="list-group-item list-group-item-action text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
 
@@ -69,23 +74,44 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                 <!-- Page Content -->
                 <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     <div class="container mt-5">
-        <h2>Añadir Técnico</h2>
-        <form action="AddTecnicoServlet" method="POST">
-            <div class="form-group">
-                <label for="Nombres">Nombres</label>
-                <input type="text" class="form-control" id="Nombres" name="Nombres" required>
-            </div>
-            <div class="form-group">
-                <label for="Cedula">Cédula</label>
-                <input type="text" class="form-control" id="Cedula" name="Cedula" required>
-            </div>
-            <div class="form-group">
-                <label for="Celular">Celular</label>
-                <input type="text" class="form-control" id="Celular" name="Celular" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Añadir Técnico</button>
-        </form>
-    </div>
+                        <h2>Editar Radio</h2>
+                        
+                        <form action="EditRadioServlet" method="POST">
+                            <input type="hidden" name="id" value="<%= radio.getPk_id_radio() %>">
+                            <div class="form-group">
+                                <label for="tipo">Tipo</label>
+                                <select class="form-control" id="tipo" name="tipo" required>
+                                    <option value="Base" <%= radio.getTipo().equals("Base") ? "selected" : "" %>>Base</option>
+                                    <option value="Móvil" <%= radio.getTipo().equals("Móvil") ? "selected" : "" %>>Móvil</option>
+                                    <option value="Portátil" <%= radio.getTipo().equals("Portátil") ? "selected" : "" %>>Portátil</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="modelo">Modelo</label>
+                                <input type="text" class="form-control" id="modelo" name="modelo" value="<%= radio.getModelo() %>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="marca">Marca</label>
+                                <input type="text" class="form-control" id="marca" name="marca" value="<%= radio.getMarca() %>" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="serie">Serie</label>
+                                <input type="text" class="form-control" id="serie" name="serie" value="<%= radio.getSerie() %>" required>
+                            </div>
+                            <!-- Campo oculto para el ID del custodio (fk_id_custodio) -->
+                            <input type="hidden" id="fk_id_custodio" name="fk_id_custodio" value="<%= radio.getFk_id_custodio() %>">
+
+
+                            <!-- ... -->
+
+
+
+                            <button type="submit" class="btn btn-primary" id="submitBtn" >Editar Radio</button>
+
+                        </form>
+                    </div>
                     <!-- El resto de tu contenido aquí -->
                 </div>
             </div>

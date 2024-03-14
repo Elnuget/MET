@@ -53,9 +53,9 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                         <a href="home.jsp" class="list-group-item list-group-item-action "><i class="fas fa-home"></i> Inicio</a>
                         <%-- Verificación del rol de usuario para mostrar el enlace Usuarios --%>
                         <% if ("admin".equals(rolUsuario)) { %>
-                        <a href="crudUsuario.jsp" class="list-group-item list-group-item-action "><i class="fas fa-users"></i> Usuarios</a>
+                        <a href="crudUsuario.jsp" class="list-group-item list-group-item-action active "><i class="fas fa-users"></i> Usuarios</a>
                         
-                        <a href="crudTecnico.jsp" class="list-group-item list-group-item-action active"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
+                        <a href="crudTecnico.jsp" class="list-group-item list-group-item-action"><i class="fas fa-tools"></i> Gestión de Técnicos</a>
                         <% } %>
                         <a href="crudCustodio.jsp" class="list-group-item list-group-item-action" ><i class="fas fa-shield-alt"></i> Gestión de Custodios</a>
                         <a href="crudRadio.jsp" class="list-group-item list-group-item-action"><i class="fas fa-broadcast-tower"></i> Gestión de Radios</a> 
@@ -69,21 +69,27 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                 <!-- Page Content -->
                 <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                     <div class="container mt-5">
-        <h2>Añadir Técnico</h2>
-        <form action="AddTecnicoServlet" method="POST">
+       <h2>Editar Usuario</h2>
+        <form action="EditUsuarioServlet" method="POST">
+            <% Usuario usuario = (Usuario) request.getAttribute("usuario"); %>
+            <input type="hidden" name="id" value="<%= usuario.getPk_id_usuario() %>">
             <div class="form-group">
-                <label for="Nombres">Nombres</label>
-                <input type="text" class="form-control" id="Nombres" name="Nombres" required>
+                <label for="Usuario">Usuario</label>
+                <input type="text" class="form-control" id="Usuario" name="Usuario" required value="<%= usuario.getUsuario() %>">
             </div>
             <div class="form-group">
-                <label for="Cedula">Cédula</label>
-                <input type="text" class="form-control" id="Cedula" name="Cedula" required>
+                <label for="Contraseña">Contraseña</label>
+                <input type="password" class="form-control" id="Contraseña" name="Contraseña" required value="<%= usuario.getContraseña() %>">
             </div>
             <div class="form-group">
-                <label for="Celular">Celular</label>
-                <input type="text" class="form-control" id="Celular" name="Celular" required>
+                <label for="rol">Rol</label>
+                <select class="form-control" id="rol" name="rol">
+                    <option value="admin" <%= usuario.getRol().equals("admin") ? "selected" : "" %>>admin</option>
+                    <option value="user" <%= usuario.getRol().equals("user") ? "selected" : "" %>>user</option>
+                    <!-- Agrega más roles según sea necesario -->
+                </select>
             </div>
-            <button type="submit" class="btn btn-primary">Añadir Técnico</button>
+            <button type="submit" class="btn btn-primary">Actualizar Usuario</button>
         </form>
     </div>
                     <!-- El resto de tu contenido aquí -->
@@ -116,3 +122,5 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </body>
 </html>
+
+   

@@ -31,10 +31,11 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
             }
         </style>
         <style>
-            body {
-                background: linear-gradient(to right, #00c6ff 0%, #ffffff 100%);
-                /* Un gradiente que comienza con un azul intenso (#00c6ff) y termina en blanco (#ffffff) */
-            }
+           body {
+    background: #b3e5fc; /* Celeste claro */
+}
+
+
             /* Mantén el resto de tus estilos aquí */
         </style>
         <div class="container-fluid">
@@ -61,7 +62,9 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                         <a href="crudRadio.jsp" class="list-group-item list-group-item-action"><i class="fas fa-broadcast-tower"></i> Gestión de Radios</a> 
                         <a href="crudMantenimiento.jsp" class="list-group-item list-group-item-action"><i class="fas fa-wrench"></i> Gestión de Mantenimientos</a>
                         <a href="LogoutServlet" class="list-group-item list-group-item-action text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
-
+                        <div class="imagen-fondo">
+                            <img src="img/fondo.jpeg" alt="Imagen de fondo" style="width:100%; height:100%; object-fit: cover;">
+                        </div>
                     </div>
                 </div>
                 <!-- HEADER -->
@@ -75,23 +78,8 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
         </div>
         <!-- BODY -->
         <!-- FOOTER -->
-        <style>
-            .imagen-fondo {
-                position: fixed; /* Posicionamiento fijo respecto a la ventana del navegador */
-                bottom: 0; /* Alineado abajo */
-                right:  0; /* Alineado a la izquierda */
-                z-index: -1; /* Coloca el div detrás de todo el contenido */
-            }
 
-            .imagen-fondo img {
-                opacity: 0.5; /* Ajusta la transparencia de la imagen (0 completamente transparente, 1 completamente opaco) */
-                width: 300px; /* O el tamaño que prefieras */
-                height: auto; /* Para mantener la proporción de la imagen */
-            }
-        </style>
-        <div class="imagen-fondo">
-            <img src="img/fondo.jpeg" alt="Imagen de fondo" style="width:100%; height:100%; object-fit: cover;">
-        </div>
+
         <!-- FOOTER -->
         <!-- Bootstrap JS and dependencies -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

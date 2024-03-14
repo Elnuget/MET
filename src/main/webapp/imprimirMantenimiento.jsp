@@ -43,9 +43,9 @@
         </style>
         <style>
             body {
-                background: linear-gradient(to right, #00c6ff 0%, #ffffff 100%);
-                /* Un gradiente que comienza con un azul intenso (#00c6ff) y termina en blanco (#ffffff) */
-            }
+    background: #b3e5fc; /* Celeste claro */
+}
+
             /* Mantén el resto de tus estilos aquí */
         </style>
 

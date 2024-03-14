@@ -4,7 +4,7 @@
 <%@page import="modelos.Entrega"%> <!-- Importa el modelo de Entrega -->
 <%@page import="dao.UsuarioDAO"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -34,9 +34,9 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
         </style>
         <style>
             body {
-                background: linear-gradient(to right, #00c6ff 0%, #ffffff 100%);
-                /* Un gradiente que comienza con un azul intenso (#00c6ff) y termina en blanco (#ffffff) */
-            }
+    background: #b3e5fc; /* Celeste claro */
+}
+
             /* Mantén el resto de tus estilos aquí */
         </style>
         <div class="container-fluid">

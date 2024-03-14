@@ -31,9 +31,9 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
         </style>
         <style>
             body {
-                background: linear-gradient(to right, #00c6ff 0%, #ffffff 100%);
-                /* Un gradiente que comienza con un azul intenso (#00c6ff) y termina en blanco (#ffffff) */
-            }
+    background: #b3e5fc; /* Celeste claro */
+}
+
             /* Mantén el resto de tus estilos aquí */
         </style>
         <div class="container-fluid">
@@ -93,7 +93,8 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                     <td><%= tecnico.getCedula() %></td>
                                     <td><%= tecnico.getCelular() %></td>
                                     <td>
-                       <a class="btn btn-info btn-sm">Editar</a>                 
+                       <a href="LoadTecnicoServlet?id=<%= tecnico.getId() %>" class="btn btn-info btn-sm">Editar</a>
+         
                                         <a href="DeleteTecnicoServlet?id=<%= tecnico.getId() %>" onclick="return confirm('¿Está seguro que desea eliminar este técnico?');" class="btn btn-danger btn-sm">Eliminar</a>
                                     </td>
                                 </tr>

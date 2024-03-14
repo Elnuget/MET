@@ -39,9 +39,9 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
         </style>
         <style>
             body {
-                background: linear-gradient(to right, #00c6ff 0%, #ffffff 100%);
-                /* Un gradiente que comienza con un azul intenso (#00c6ff) y termina en blanco (#ffffff) */
-            }
+    background: #b3e5fc; /* Celeste claro */
+}
+
             /* Mantén el resto de tus estilos aquí */
         </style>
         <style>
@@ -185,7 +185,8 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                 <a href="ImprimirMantenimientoServlet?id=<%= mantenimiento.getPk_id_mantenimiento() %>"  class="btn btn-primary btn-sm">Imprimir</a>
                                 <!-- Suponiendo que estás dentro de un bucle que recorre los mantenimientos -->
                                 <a href="VerificarEntregaServlet?fkIdMantenimiento=<%= mantenimiento.getPk_id_mantenimiento() %>" class="btn btn-success btn-sm">Entregar</a>
-                                <a class="btn btn-info btn-sm">Editar</a>
+                                <a href="edit-mantenimiento.jsp?id=<%= mantenimiento.getPk_id_mantenimiento() %>" class="btn btn-info btn-sm">Editar</a>
+
 
                                 <a href="DeleteMantenimientoServlet?id=<%= mantenimiento.getPk_id_mantenimiento() %>" onclick="return confirm('¿Está seguro que desea eliminar este mantenimiento?');" class="btn btn-danger btn-sm">Eliminar</a>
                             </td>

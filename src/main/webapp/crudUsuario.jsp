@@ -32,9 +32,9 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
         </style>
         <style>
             body {
-                background: linear-gradient(to right, #00c6ff 0%, #ffffff 100%);
-                /* Un gradiente que comienza con un azul intenso (#00c6ff) y termina en blanco (#ffffff) */
-            }
+    background: #b3e5fc; /* Celeste claro */
+}
+
             /* Mantén el resto de tus estilos aquí */
         </style>
         <div class="container-fluid">
@@ -100,7 +100,8 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                     <td>••••••••</td> <!-- Por seguridad, no se deben mostrar las contraseñas -->
                                     <td><%= usuario.getRol() %></td>
                                     <td>
-                                <a class="btn btn-info btn-sm">Editar</a>       
+                                <a href="LoadUsuarioServlet?id=<%= usuario.getPk_id_usuario() %>" class="btn btn-info btn-sm">Editar</a>
+     
                                         <a href="DeleteUsuarioServlet?id=<%= usuario.getPk_id_usuario() %>" onclick="return confirm('¿Está seguro que desea eliminar este usuario?');" class="btn btn-danger btn-sm">Eliminar</a>
                                     </td>
                                 </tr>
