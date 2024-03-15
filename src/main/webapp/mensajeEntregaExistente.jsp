@@ -124,6 +124,12 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                                .flex-container {
     display: flex; /* Establece el contenedor como un contenedor flexible */
 }
+.table-bordered,
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid black; /* Establece el color del borde de la tabla, celdas de cabecera y celdas de datos como negro */
+}
+
 
 .flex-container > div {
     flex: 1; /* Hace que los elementos div dentro del contenedor flexible se expandan de manera uniforme */
