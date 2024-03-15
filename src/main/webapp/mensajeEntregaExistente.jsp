@@ -31,6 +31,11 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
             .sidebar {
                 min-height: 100vh;
             }
+            @media print {
+                .no-print {
+                    display: none;
+                }
+            }
         </style>
         <style>
             body {
@@ -106,11 +111,28 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                             </table>
 
                             <!-- Espacios para las firmas (si se requiere) -->
-                            <div>
-                                <p>Firma del Técnico: ______________________</p>
-                                <p>Firma del Custodio: _____________________</p>
-                            </div>
+                            <div class="flex-container">
+    <div>
+        <p>Firma del Técnico: ______________________</p>
+    </div>
+    <div>
+        <p>Firma del Custodio: _____________________</p>
+    </div>
+</div>
 
+                            <style>
+                               .flex-container {
+    display: flex; /* Establece el contenedor como un contenedor flexible */
+}
+
+.flex-container > div {
+    flex: 1; /* Hace que los elementos div dentro del contenedor flexible se expandan de manera uniforme */
+    margin-right: 10px; /* Añade un margen derecho entre los elementos div */
+}
+
+
+                            </style>
+<div class="no-print">
                             <!-- Botones -->
                             <div class="mt-3">
                                 <button class="btn btn-primary" onclick="window.print()">Imprimir</button>
@@ -118,7 +140,7 @@ if (nombreUsuarioLogueado == null || rolUsuario == null) {
                             </div>
                         </div>
                         <!-- El resto del contenido de tu página -->
-
+</div>
                     </div>
                     <%
                         }
